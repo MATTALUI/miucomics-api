@@ -21,7 +21,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(formidable({
-  uploadDir: path.join(__dirname, '/uploads'),
+  uploadDir: path.join(__dirname, '/temp'),
 }));
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
@@ -49,20 +49,19 @@ app.get('/', function(req,res,next){
 });
 
 app.post('/', function(req,res,next){
-  // console.log(req.fields);
   for (let file in req.files){
-  console.log(req.files[file].path);
     fs.readFile(req.files[file].path,function(err, fileBuffer){
+      if(err) console.eror(err);
       s3.putObject({
         Bucket: 'mixitupcomicimages',
         Key: `${file}.jpg`,
-        Body: fileBuffer
+        Body: fileBuffer,
+        ACL: 'public-read'
       },function(err,data){
         if(err){
-          console.error(err)
+          console.error(err);
         }else{
-          // fs.unlink(req.files[file].path);
-          console.log(data);
+          fs.unlink(req.files[file].path,()=>{});
         }
       });
     });
