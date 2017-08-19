@@ -25,6 +25,7 @@ app.use(formidable({
 }));
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
+  res.set({'X-who-stole-the-cookies-from-the-cookie-jar': 'matt'});
   next();
 });
 
