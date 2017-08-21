@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("comics", function (table) {
+  return knex.schema.createTable("series", function (table) {
   table.increments('id');
   table.string('title').notNullable().defaultTo('');
   table.integer('issue_number').notNullable().defaultTo('');
@@ -13,5 +13,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("comics");
+  return knex.schema.dropTable("series");
 };
