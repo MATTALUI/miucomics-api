@@ -55,7 +55,7 @@ app.post('/', function(req,res,next){
       if(err) console.eror(err);
       s3.putObject({
         Bucket: 'mixitupcomicimages',
-        Key: `${file}.jpg`,
+        Key: `${file}`,
         Body: fileBuffer,
         ACL: 'public-read'
       },function(err,data){
@@ -67,7 +67,7 @@ app.post('/', function(req,res,next){
       });
     });
   }
-  res.send('meow');
+  res.send('at\'ll do, pig.');
 
 
 
