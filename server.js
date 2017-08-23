@@ -17,6 +17,9 @@ const s3 = new AWS.S3({
 });
 
 
+const comicsRoute = require('./routes/comics.js');
+
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,7 +34,7 @@ app.use(function (req, res, next) {
 
 
 
-
+app.use('/comics', comicsRoute);
 
 
 app.get('/', function(req,res,next){
@@ -43,10 +46,10 @@ app.get('/', function(req,res,next){
       console.log(err);
     }else{
       console.log(data);
-      // res.send(data.Body);
+      res.send(data);
     }
   });
-  res.send('Hello World.')
+  // res.send('Hello World.')
 });
 
 app.post('/', function(req,res,next){
