@@ -40,6 +40,33 @@ exports.seed = function(knex, Promise) {
           pub_date: new Date(2004,1,28),
           ebay: false,
           shopify: false
+        },
+        {
+          id: 5,
+          series_id: 2,
+          number: 1,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/The-Amory-Wars-1-1.jpg',
+          pub_date: new Date(2004),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 6,
+          series_id: 2,
+          number: 2,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/The-Amory-Wars-1-2.jpg',
+          pub_date: new Date(2004),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 7,
+          series_id: 2,
+          number: 3,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/The-Amory-Wars-1-3.jpg',
+          pub_date: new Date(2004),
+          ebay: false,
+          shopify: false
         }
       ]);
     })
