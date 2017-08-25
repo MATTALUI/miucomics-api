@@ -74,6 +74,34 @@ exports.seed = function(knex, Promise) {
           price: 310.50,
           quantity: 12,
           issue_id: 4
+        },
+        {
+          id: 11,
+          condition: 'Very Fine',
+          price: 1.00,
+          quantity: 1,
+          issue_id: 8
+        },
+        {
+          id: 12,
+          condition: 'Near Mint',
+          price: 4.00,
+          quantity: 2,
+          issue_id: 8
+        },
+        {
+          id: 13,
+          condition: 'Near Mint',
+          price: 4.00,
+          quantity: 1,
+          issue_id: 10
+        },
+        {
+          id: 14,
+          condition: 'Near Mint',
+          price: 4.00,
+          quantity: 1,
+          issue_id: 11
         }
 
 

@@ -67,7 +67,44 @@ exports.seed = function(knex, Promise) {
           pub_date: new Date(2004),
           ebay: false,
           shopify: false
+        },
+        {
+          id: 8,
+          series_id: 4,
+          number: 1,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/Alpha-Flight-1-1.jpg',
+          pub_date: new Date(1983, 8),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 9,
+          series_id: 4,
+          number: 2,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/Alpha-Flight-1-2.jpg',
+          pub_date: new Date(1983, 9),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 10,
+          series_id: 5,
+          number: 1,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/Alpha-Flight-2-1.jpg',
+          pub_date: new Date(1997, 7),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 11,
+          series_id: 6,
+          number: 47,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/X-Men-1-47.jpg',
+          pub_date: new Date(1997, 7),
+          ebay: false,
+          shopify: false
         }
+
       ]);
     })
     .then(function(){

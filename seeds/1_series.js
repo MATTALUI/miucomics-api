@@ -21,7 +21,17 @@ exports.seed = function(knex, Promise) {
         },
         {
           id:4,
-          title: "SpiderMan",
+          title: "Alpha Flight",
+          volume: 1
+        },
+        {
+          id:5,
+          title: "Alpha Flight",
+          volume: 2
+        },
+        {
+          id:6,
+          title: "X-Men",
           volume: 1
         }
       ]);
