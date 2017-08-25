@@ -13,6 +13,16 @@ exports.seed = function(knex, Promise) {
           id: 2,
           title: "The Amory Wars",
           volume: 1
+        },
+        {
+          id:3,
+          title: "Flat Track Furies",
+          volume: 1
+        },
+        {
+          id:4,
+          title: "SpiderMan",
+          volume: 1
         }
       ]);
   })

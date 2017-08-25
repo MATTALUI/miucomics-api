@@ -24,6 +24,7 @@ module.exports.getAllSeriesWithImages = function(){
       covers = covers.map((set)=>{
         let coversArray = [];
         set.forEach((cover)=>{coversArray.push(cover.cover_image)});
+        if(coversArray.length === 0) coversArray.push('https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg')
         return coversArray;
       });
       covers.forEach((seriesCovers, index)=>{
