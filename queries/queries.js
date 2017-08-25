@@ -6,12 +6,27 @@ function getAllSeries(){
     return seriesData;
   });
 };
+function getAllIssues(){
+  return knex('issues').select('*').then(issues=>issues);
+}
 
 function getSeriesIssueCovers(seriesId){
   return knex('issues')
   .where('series_id', seriesId)
   .select('cover_image')
   .then((info)=>{return info});
+}
+function getSeriesIssues(seriesId){
+  return knex('issues')
+  .where('series_id', seriesId)
+  .select('*')
+  .then(issues=>issues);
+}
+function getIssueStock(issueId){
+  return knex('stock')
+  .where('issue_id', issueId)
+  .select(['condition','price','quantity'])
+  .then(stock=>stock);
 }
 
 module.exports.getAllSeriesWithImages = function(){
@@ -35,8 +50,19 @@ module.exports.getAllSeriesWithImages = function(){
   });
 }
 
-module.exports.getAllIssues = function(){
-  return knex('issues').select('*').then(issues=>issues);
+module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
+  return getSeriesIssues(seriesId).then(function(issues){
+    let promises = [];
+    issues.forEach((issue)=>{
+      promises.push(getIssueStock(issue.id));
+    });
+    return Promise.all(promises).then((stockForIssues)=>{
+      stockForIssues.forEach((stockList,index)=>{
+        issues[index].stock = stockList;
+      });
+      return issues;
+    });
+  });
 }
 module.exports.getAllStock = function(){
   return knex('stock').select('*').then(issues=>issues);

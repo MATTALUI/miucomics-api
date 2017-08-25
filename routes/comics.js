@@ -9,6 +9,12 @@ router.get('/series', function(req,res,next){
     res.send(info);
   });
 });
+router.get('/series/:id', function(req,res,next){
+  queries.getSeriesIssuesWithStockInfo(req.params.id).then(function(info){
+    res.send(info);
+  });
+
+});
 router.get('/issues', function(req,res,next){
   queries.getAllIssues().then(function(info){
     res.send(info);
