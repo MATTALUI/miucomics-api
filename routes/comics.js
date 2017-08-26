@@ -9,12 +9,40 @@ router.get('/series', function(req,res,next){
     res.send(info);
   });
 });
+
 router.get('/series/:id', function(req,res,next){
   queries.getSeriesIssuesWithStockInfo(req.params.id).then(function(info){
     res.send(info);
   });
-
 });
+
+router.post('/series', function(req,res,next){
+  queries.postNewSeries(req.body).then((newSeries)=>{
+    res.send(newSeries);
+  });
+});
+
+router.delete('/series/:id', function(req,res,next){
+  queries.deleteSeries(req.params.id).then(()=>{
+    res.sendStatus(202);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.get('/issues', function(req,res,next){
   queries.getAllIssues().then(function(info){
     res.send(info);

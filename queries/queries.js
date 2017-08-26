@@ -28,6 +28,9 @@ function getIssueStock(issueId){
   .select(['condition','price','quantity'])
   .then(stock=>stock);
 }
+function getAllStock(){
+  return knex('stock').select('*').then(issues=>issues);
+}
 
 module.exports.getAllSeriesWithImages = function(){
   return getAllSeries().then((allSeries)=>{
@@ -64,8 +67,21 @@ module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
     });
   });
 }
-module.exports.getAllStock = function(){
-  return knex('stock').select('*').then(issues=>issues);
+module.exports.postNewSeries = function (data){
+  return knex('series')
+  .insert(data)
+  .returning('*')
+  .then((newSeries)=>{
+    newSeries[0].issue_covers = ['https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg'];
+    return newSeries[0];
+  });
+}
+module.exports.deleteSeries = function(seriesId){
+  return knex('series')
+  .del()
+  .where('id', seriesId)
+  .returning('*')
+  .then(deleted=>deleted);
 }
 module.exports.meow = function(){
   return getSeriesIssueCovers(1)
