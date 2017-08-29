@@ -31,6 +31,12 @@ function getIssueStock(issueId){
 function getAllStock(){
   return knex('stock').select('*').then(issues=>issues);
 }
+function addStockInfo(stockObject){
+  return knex('stock')
+  .insert(stockObject)
+  .returning('*')
+  .then(newStockInfo=>newStockInfo);
+}
 
 module.exports.getAllSeriesWithImages = function(){
   return getAllSeries().then((allSeries)=>{
@@ -52,7 +58,6 @@ module.exports.getAllSeriesWithImages = function(){
     });
   });
 }
-
 module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
   return getSeriesIssues(seriesId).then(function(issues){
     let promises = [];
@@ -90,6 +95,13 @@ module.exports.postNewIssue = function(data){
   .then((newIssue)=>{
     return newIssue[0];
   });
+}
+module.exports.postNewStockInfo = function(stockInfo){
+  let promises = [];
+  stockInfo.forEach((stockObject)=>{
+    promises.push(addStockInfo(stockObject));
+  });
+  return Promise.all(promises).then(allNewStocksArray=>allNewStocksArray);
 }
 module.exports.meow = function(){
   return getSeriesIssueCovers(1)

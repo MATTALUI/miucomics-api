@@ -86,6 +86,16 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
 
 });
 
+router.post('/stock', function(req,res,next){
+  req.body.stockInfo.forEach((stockObject)=>{
+    stockObject.condition = stockObject.quality;
+    delete stockObject.quality;
+    stockObject.issue_id = req.body.issueId;
+  });
+  queries.postNewStockInfo(req.body.stockInfo).then(()=>{
+    res.sendStatus(202);
+  });
+});
 
 
 
