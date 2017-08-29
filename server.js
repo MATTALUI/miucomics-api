@@ -55,23 +55,23 @@ app.get('/', function(req,res,next){
 });
 
 app.post('/',formidable({uploadDir: path.join(__dirname, '/temp')}), function(req,res,next){
-  for (let file in req.files){
-    fs.readFile(req.files[file].path,function(err, fileBuffer){
-      if(err) console.eror(err);
-      s3.putObject({
-        Bucket: 'mixitupcomicimages',
-        Key: `${file}`,
-        Body: fileBuffer,
-        ACL: 'public-read'
-      },function(err,data){
-        if(err){
-          console.error(err);
-        }else{
-          fs.unlink(req.files[file].path,()=>{});
-        }
-      });
-    });
-  }
+  // for (let file in req.files){
+  //   fs.readFile(req.files[file].path,function(err, fileBuffer){
+  //     if(err) console.eror(err);
+  //     s3.putObject({
+  //       Bucket: 'mixitupcomicimages',
+  //       Key: `${file}`,
+  //       Body: fileBuffer,
+  //       ACL: 'public-read'
+  //     },function(err,data){
+  //       if(err){
+  //         console.error(err);
+  //       }else{
+  //         fs.unlink(req.files[file].path,()=>{});
+  //       }
+  //     });
+  //   });
+  // }
   res.send('at\'ll do, pig.');
 
 

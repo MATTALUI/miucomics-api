@@ -83,6 +83,14 @@ module.exports.deleteSeries = function(seriesId){
   .returning('*')
   .then(deleted=>deleted);
 }
+module.exports.postNewIssue = function(data){
+  return knex('issues')
+  .insert(data)
+  .returning('*')
+  .then((newIssue)=>{
+    return newIssue[0];
+  });
+}
 module.exports.meow = function(){
   return getSeriesIssueCovers(1)
 }
