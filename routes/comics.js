@@ -40,6 +40,7 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.body.number = Number(req.body.number);
   req.body.ebay = (req.body.ebay==='true');
   req.body.shopify = (req.body.shopify==='true');
+  req.pub_date = req.pub_date;
   if(req.body.ebay){
     //space for handling ebay, when we get to that
     console.log('shared with ebay');
@@ -56,7 +57,8 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
   }else{
     delete req.body.series_title;
     req.body.cover_image = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg';
-    console.log(req.body);
+    // console.log(req.body);
+    // res.send({file: false});
     queries.postNewIssue(req.body).then(function(newIssue){
       res.send(newIssue)
     });
