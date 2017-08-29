@@ -5,6 +5,11 @@ const queries = require('../queries/queries.js');
 const multer  = require('multer');
 const upload = multer({ dest: 'temp/' });
 const fs = require('fs');
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    region: 'us-east-2'
+});
 
 
 
@@ -32,9 +37,6 @@ router.delete('/series/:id', function(req,res,next){
   });
 });
 
-
-
-
 router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.body.series_id = Number(req.body.series_id);
   req.body.number = Number(req.body.number);
@@ -50,15 +52,33 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
     console.log('shared with shopify');
   }
   if(req.file != undefined){
-    console.log(normalizeImageUrl(req.body.series_title, req.body.number));
-    console.log(req.file);
-    fs.unlink(req.file.path,()=>{});
-    res.send({file: true});
+    let imageKey = normalizeImageUrl(req.body.series_title, req.body.number,req.file.mimetype);
+    let coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
+    fs.readFile(req.file.path, function(err,coverBuffer){
+      s3.putObject({
+            Bucket: 'mixitupcomicimages',
+            Key: imageKey,
+            Body: coverBuffer,
+            ACL: 'public-read'
+      },function(err,data){
+        if (err){
+          console.log(err);
+          fs.unlink(req.file.path,()=>{});
+          res.send(err);
+        }else{
+          fs.unlink(req.file.path,()=>{});
+          delete req.body.series_title;
+          req.body.cover_image = coverUrl;
+          queries.postNewIssue(req.body).then((newIssueInfo)=>{
+            res.send(newIssueInfo);
+          });
+        }
+      });
+    });
+
   }else{
     delete req.body.series_title;
     req.body.cover_image = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg';
-    // console.log(req.body);
-    // res.send({file: false});
     queries.postNewIssue(req.body).then(function(newIssue){
       res.send(newIssue)
     });
@@ -67,10 +87,18 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
 });
 
 
-function normalizeImageUrl(series, issueNumber){
+
+
+
+
+
+
+
+
+function normalizeImageUrl(series, issueNumber,extension='image/jpeg'){
 	return series.split('').filter((character)=>{
 		return character.match(/[^!*'(.){}";:@&=/[\]+$,/?%#]/gi);
-	}).join('').replace(/[' ']/gi,'-').replace('Volume-','')+'-'+issueNumber;
+	}).join('').replace(/[' ']/gi,'-').replace('Volume-','')+'-'+issueNumber+'.'+extension.split('/')[1];
 
 }
 
@@ -87,18 +115,18 @@ function normalizeImageUrl(series, issueNumber){
 
 
 
-router.get('/issues', function(req,res,next){
-  queries.getAllIssues().then(function(info){
-    res.send(info);
-  });
-});
-router.get('/stock', function(req,res,next){
-  queries.getAllStock().then(function(info){
-    res.send(info);
-  });
-});
-router.get('/meow',function(req,res,next){
-  queries.meow().then((info)=>{res.send(info)});
-});
+// router.get('/issues', function(req,res,next){
+//   queries.getAllIssues().then(function(info){
+//     res.send(info);
+//   });
+// });
+// router.get('/stock', function(req,res,next){
+//   queries.getAllStock().then(function(info){
+//     res.send(info);
+//   });
+// });
+// router.get('/meow',function(req,res,next){
+//   queries.meow().then((info)=>{res.send(info)});
+// });
 
 module.exports = router;
