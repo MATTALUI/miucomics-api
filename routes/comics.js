@@ -37,6 +37,9 @@ router.delete('/series/:id', function(req,res,next){
   });
 });
 
+
+
+
 router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.body.series_id = Number(req.body.series_id);
   req.body.number = Number(req.body.number);
@@ -86,14 +89,17 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
 
 });
 
-router.post('/stock', function(req,res,next){
-  req.body.stockInfo.forEach((stockObject)=>{
-    stockObject.condition = stockObject.quality;
-    delete stockObject.quality;
-    stockObject.issue_id = req.body.issueId;
+
+
+router.get('/stock/:id', function(req,res,next){
+  queries.getStockForIssue(req.params.id).then((stockInfo)=>{
+    res.send(stockInfo);
   });
-  queries.postNewStockInfo(req.body.stockInfo).then(()=>{
-    res.sendStatus(202);
+});
+
+router.post('/stock', function(req,res,next){
+  queries.postNewStockInfo(req.body).then((newStockInfo)=>{
+    res.send(newStockInfo)
   });
 });
 

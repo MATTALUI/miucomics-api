@@ -35,7 +35,28 @@ function addStockInfo(stockObject){
   return knex('stock')
   .insert(stockObject)
   .returning('*')
-  .then(newStockInfo=>newStockInfo);
+  .then(newStockInfo=>newStockInfo[0]);
+}
+function buildStockObjects(stockFormRequest){
+  let stockObjects = [];
+  let issueId = stockFormRequest.issueId;
+  const conditions = ['Mint', 'Near Mint','Very Fine', 'Fine','Very Good', 'Good', 'Fair', 'Poor'];
+  // console.log(stockFormRequest);
+  conditions.forEach((condition)=>{
+    let stockObj = {};
+    stockObj.condition = condition
+    stockObj.issue_id = issueId;
+    stockObj.quantity = 0;
+    stockObj.price = 0.00;
+    stockFormRequest.stockInfo.forEach((reqObj)=>{
+      if(reqObj.condition === condition){
+        stockObj.quantity += reqObj.quantity;
+        stockObj.price = reqObj.price;
+      }
+    });
+    stockObjects.push(stockObj)
+  });
+  return stockObjects;
 }
 
 module.exports.getAllSeriesWithImages = function(){
@@ -98,7 +119,8 @@ module.exports.postNewIssue = function(data){
 }
 module.exports.postNewStockInfo = function(stockInfo){
   let promises = [];
-  stockInfo.forEach((stockObject)=>{
+  let stockObjects = buildStockObjects(stockInfo);
+  stockObjects.forEach((stockObject)=>{
     promises.push(addStockInfo(stockObject));
   });
   return Promise.all(promises).then(allNewStocksArray=>allNewStocksArray);
