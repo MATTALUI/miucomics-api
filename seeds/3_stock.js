@@ -5,106 +5,124 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('stock').insert([
-        {
-          id: 1,
-          condition: 'Mint',
-          price: 100.00,
-          quantity:2,
-          issue_id: 1
-        },
-        {
-          id: 2,
-          condition: 'Poor',
-          price: 3.50,
-          quantity:6,
-          issue_id: 1
-        },
-        {
-          id: 3,
-          condition: 'Fine',
-          price: 10.11,
-          quantity: 21,
-          issue_id: 1
-        },
-        {
-          id: 4,
-          condition: 'Near Mint',
-          price: 40.50,
-          quantity:6,
-          issue_id: 2
-        },
-        {
-          id: 5,
-          condition: 'Very Good',
-          price: 20.50,
-          quantity:3,
-          issue_id: 2
-        },
-        {
-          id: 6,
-          condition: 'Good',
-          price: 10.50,
-          quantity:6,
-          issue_id: 2
-        },
-        {
-          id: 7,
-          condition: 'Near Mint',
-          price: 40.50,
-          quantity: 2,
-          issue_id: 3
-        },
-        {
-          id: 8,
-          condition: 'Mint',
-          price: 30.50,
-          quantity: 1,
-          issue_id: 3
-        },
-        {
-          id: 9,
-          condition: 'Mint',
-          price: 30.50,
-          quantity: 1,
-          issue_id: 4
-        },
-        {
-          id: 10,
-          condition: 'Fair',
-          price: 310.50,
-          quantity: 12,
-          issue_id: 4
-        },
-        {
-          id: 11,
-          condition: 'Very Fine',
-          price: 1.00,
-          quantity: 1,
-          issue_id: 8
-        },
-        {
-          id: 12,
-          condition: 'Near Mint',
-          price: 4.00,
-          quantity: 2,
-          issue_id: 8
-        },
-        {
-          id: 13,
-          condition: 'Near Mint',
-          price: 4.00,
-          quantity: 1,
-          issue_id: 10
-        },
-        {
-          id: 14,
-          condition: 'Near Mint',
-          price: 4.00,
-          quantity: 1,
-          issue_id: 11
-        }
+        { condition: 'Mint', issue_id: 1, quantity: 3, price: 4.99 },
+        { condition: 'Near Mint', issue_id: 1, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 1, quantity: 1, price: 2.33 },
+        { condition: 'Fine', issue_id: 1, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 1, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 1, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 1, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 1, quantity: 1, price: 1.06 },
 
 
+
+        { condition: 'Mint', issue_id: 2, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 2, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 2, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 2, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 2, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 2, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 2, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 2, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 3, quantity: 2, price: 3.07 },
+        { condition: 'Near Mint', issue_id: 3, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 3, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 3, quantity: 4, price: 2.56 },
+        { condition: 'Very Good', issue_id: 3, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 3, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 3, quantity: 5, price: .45 },
+        { condition: 'Poor', issue_id: 3, quantity: 0, price: 0 },
+
+
+
+        { condition: 'Mint', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Near Mint', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 4, quantity: 1, price: 2 },
+        { condition: 'Fine', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 4, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 4, quantity: 8, price: 4.65 },
+
+
+
+        { condition: 'Mint', issue_id: 5, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 5, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 5, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 5, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 5, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 5, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 5, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 5, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 6, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 6, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 6, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 6, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 6, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 6, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 6, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 6, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 7, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 7, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 7, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 7, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 7, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 7, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 7, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 7, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 8, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 8, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 8, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 8, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 8, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 8, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 8, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 8, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 9, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 9, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 9, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 9, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 9, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 9, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 9, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 9, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 10, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 10, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 10, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 10, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 10, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 10, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 10, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 10, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 11, quantity: 45, price: 1 },
+        { condition: 'Near Mint', issue_id: 11, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 11, quantity: 0, price: 2 },
+        { condition: 'Fine', issue_id: 11, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 11, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 11, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 11, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 11, quantity: 1, price: .99 },
       ]);
     })
     .then(function(){
