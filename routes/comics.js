@@ -103,6 +103,22 @@ router.post('/stock', function(req,res,next){
   });
 });
 
+router.patch('/stock/:id',function(req,res,next){
+  queries.updateStockPrice(req.params.id,req.body).then(()=>{
+    res.sendStatus(200);
+  });
+});
+router.put('/stock/:id', function(req,res,next){
+  queries.increaseStockQuantity(req.params.id,req.body).then(()=>{
+    res.sendStatus(200);
+  });
+});
+router.delete('/stock/:id', function(req,res,next){
+  queries.decreaseStockQuantity(req.params.id,req.body).then(()=>{
+    res.sendStatus(200);
+  });
+});
+
 
 
 

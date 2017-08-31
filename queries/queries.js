@@ -125,6 +125,36 @@ module.exports.postNewStockInfo = function(stockInfo){
   });
   return Promise.all(promises).then(allNewStocksArray=>allNewStocksArray);
 }
+module.exports.decreaseStockQuantity = function(id,{condition}){
+  return knex('stock')
+  .update('quantity', knex.raw('quantity - 1'))
+  .where('condition', condition)
+  .where('issue_id', id)
+  .returning('*')
+  .then((relevantStock)=>{
+    return;
+  })
+}
+module.exports.increaseStockQuantity = function(id,{condition}){
+  return knex('stock')
+  .update('quantity', knex.raw('quantity + 1'))
+  .where('condition', condition)
+  .where('issue_id', id)
+  .returning('*')
+  .then((relevantStock)=>{
+    return;
+  })
+}
+module.exports.updateStockPrice=function(id,{price,condition}){
+  return knex('stock')
+  .update({price:price})
+  .where('issue_id',id)
+  .where('condition', condition)
+  .returning('*')
+  .then((updatedStock)=>{
+    return updatedStock
+  });
+}
 module.exports.meow = function(){
   return getSeriesIssueCovers(1)
 }
