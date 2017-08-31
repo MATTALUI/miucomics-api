@@ -17,6 +17,7 @@ const s3 = new AWS.S3({
 });
 
 
+
 const comicsRoute = require('./routes/comics.js');
 
 
@@ -24,9 +25,6 @@ const comicsRoute = require('./routes/comics.js');
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use(formidable({
-//   uploadDir: path.join(__dirname, '/temp'),
-// }));
 
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
@@ -52,31 +50,6 @@ app.get('/', function(req,res,next){
     }
   });
   // res.send('Hello World.')
-});
-
-app.post('/',formidable({uploadDir: path.join(__dirname, '/temp')}), function(req,res,next){
-  // for (let file in req.files){
-  //   fs.readFile(req.files[file].path,function(err, fileBuffer){
-  //     if(err) console.eror(err);
-  //     s3.putObject({
-  //       Bucket: 'mixitupcomicimages',
-  //       Key: `${file}`,
-  //       Body: fileBuffer,
-  //       ACL: 'public-read'
-  //     },function(err,data){
-  //       if(err){
-  //         console.error(err);
-  //       }else{
-  //         fs.unlink(req.files[file].path,()=>{});
-  //       }
-  //     });
-  //   });
-  // }
-  res.send('at\'ll do, pig.');
-
-
-
-
 });
 
 
