@@ -15,6 +15,15 @@ const s3 = new AWS.S3({
     apiVersion: '2006-03-01',
     region: 'us-east-2'
 });
+var squareAppId;
+var squareAccessToken;
+if(process.env.NODE_ENV === 'production'){
+  squareAppId = process.env.SQUARE_APP_ID;
+  squareAccessToken = process.env.SQUARE_PERSONAL_ACCESS_TOKEN;
+}else{
+  squareAppId = process.env.SANDBOX_SQUARE_APP_ID;
+  squareAccessToken = process.env.SANDBOX_SQUARE_PERSONAL_ACCESS_TOKEN;
+}
 
 
 
@@ -38,18 +47,11 @@ app.use('/comics', comicsRoute);
 
 
 app.get('/', function(req,res,next){
-  s3.getObject({
-    Bucket: 'mixitupcomicimages',
-    Key: 'spidermancover.jpg'
-  },function(err,data){
-    if(err){
-      console.log(err);
-    }else{
-      console.log(data);
-      res.send(data);
-    }
-  });
-  // res.send('Hello World.')
+  if(process.env.NODE_ENV === 'production'){
+    res.redirect('http://miucomics.herokuapp.com/');
+  }else{
+    res.redirect('http://localhost:3000');
+  }
 });
 
 
