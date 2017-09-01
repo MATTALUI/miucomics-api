@@ -75,7 +75,6 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
           delete req.body.series_title;
           req.body.cover_image = coverUrl;
           queries.postNewIssue(req.body).then((newIssueInfo)=>{
-            // squareCall.createSquareItemFromIssue(newIssueInfo);
             res.send(newIssueInfo);
           });
         }
@@ -86,7 +85,6 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
     delete req.body.series_title;
     req.body.cover_image = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg';
     queries.postNewIssue(req.body).then(function(newIssue){
-      // squareCall.createSquareItemFromIssue(newIssue);
       res.send(newIssue)
     });
   }
@@ -97,13 +95,14 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
 
 router.get('/stock/:id', function(req,res,next){
   queries.getStockForIssue(req.params.id).then((stockInfo)=>{
+
     res.send(stockInfo);
   });
 });
 
 router.post('/stock', function(req,res,next){
   queries.postNewStockInfo(req.body).then((newStockInfo)=>{
-    squareCall.createSquareItemFromIssue(newStockInfo);
+    squareCall.createSquareItemFromStocks(newStockInfo);
     res.send(newStockInfo)
   });
 });

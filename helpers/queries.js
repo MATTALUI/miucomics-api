@@ -102,6 +102,9 @@ module.exports.postNewSeries = function (data){
     return newSeries[0];
   });
 }
+
+
+
 module.exports.deleteSeries = function(seriesId){
   return knex('series')
   .del()
@@ -154,4 +157,12 @@ module.exports.updateStockPrice=function(id,{price,condition}){
   .then((updatedStock)=>{
     return updatedStock
   });
+}
+module.exports.getIssueById = function(id){
+  return knex('issues')
+  .join('series','issues.series_id','series.id')
+  .where('issues.id', id)
+  .returning('*')
+  .first()
+  .then(issue=>issue);
 }
