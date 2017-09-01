@@ -10,6 +10,7 @@ const port = process.env.PORT || 8000;
 const AWS = require('aws-sdk');
 const path = require('path');
 const formidable = require('express-formidable');
+const request = require('request');
 const fs = require('fs');
 const s3 = new AWS.S3({
     apiVersion: '2006-03-01',
@@ -31,7 +32,7 @@ const comicsRoute = require('./routes/comics.js');
 
 
 
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -52,6 +53,21 @@ app.get('/', function(req,res,next){
   }else{
     res.redirect('http://localhost:3000');
   }
+});
+app.get('/test',function(req,res,next){
+  console.log(process.env.LOCATION_ID);
+  let options = {
+    url: 'https://connect.squareup.com/v2/locations',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  }
+  request(options,function(error, response, body){
+    res.send(body);
+  });
 });
 
 

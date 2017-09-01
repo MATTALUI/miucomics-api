@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
-const queries = require('../queries/queries.js');
+const queries = require('../helpers/queries.js');
+const squareCall = require('../helpers/square.js');
 const multer  = require('multer');
 const upload = multer({ dest: 'temp/' });
 const fs = require('fs');
@@ -27,6 +28,7 @@ router.get('/series/:id', function(req,res,next){
 
 router.post('/series', function(req,res,next){
   queries.postNewSeries(req.body).then((newSeries)=>{
+    squareCall.createSquareCategoryFromSeries(newSeries)
     res.send(newSeries);
   });
 });
@@ -136,29 +138,5 @@ function normalizeImageUrl(series, issueNumber,extension='image/jpeg'){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// router.get('/issues', function(req,res,next){
-//   queries.getAllIssues().then(function(info){
-//     res.send(info);
-//   });
-// });
-// router.get('/stock', function(req,res,next){
-//   queries.getAllStock().then(function(info){
-//     res.send(info);
-//   });
-// });
-// router.get('/meow',function(req,res,next){
-//   queries.meow().then((info)=>{res.send(info)});
-// });
 
 module.exports = router;

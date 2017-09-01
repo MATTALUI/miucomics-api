@@ -155,6 +155,3 @@ module.exports.updateStockPrice=function(id,{price,condition}){
     return updatedStock
   });
 }
-module.exports.meow = function(){
-  return getSeriesIssueCovers(1)
-}
