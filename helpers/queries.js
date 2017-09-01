@@ -160,9 +160,9 @@ module.exports.updateStockPrice=function(id,{price,condition}){
 }
 module.exports.getIssueById = function(id){
   return knex('issues')
+  .select(['issues.id as id','title','series_id','volume','number', 'pub_date', 'ebay', 'shopify', 'cover_image'])
   .join('series','issues.series_id','series.id')
-  .where('issues.id', id)
-  .returning('*')
+  .where('issues.id',id)
   .first()
   .then(issue=>issue);
 }

@@ -13,7 +13,7 @@ module.exports.createSquareItemFromStocks = function(stocks){
       category_id: `series-${issue.series_id}`,
       visibility: "PRIVATE",
       variations: []
-    }
+    };
     stocks.forEach((stockObject)=>{
       let variation = {
         name: `${stockObject.condition}`,
@@ -24,7 +24,6 @@ module.exports.createSquareItemFromStocks = function(stocks){
           amount: ((stockObject.price.toFixed(2))*100)
         }
       };
-      console.log(variation.price_money);
       itemObj.variations.push(variation);
     });
     let options = {
@@ -36,9 +35,9 @@ module.exports.createSquareItemFromStocks = function(stocks){
         'Accept': 'application/json',
         'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
       }
-    }
+    };
     request(options,(error,response,body)=>{
-      console.log(body);
+      if(!error)console.log(body);
     });
   });
 }
