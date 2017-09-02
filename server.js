@@ -67,7 +67,9 @@ app.get('/test',function(req,res,next){
   }
   request(options,function(error, response, body){
     body = JSON.parse(body);
-    res.send(body.filter(stock=>stock.quantity_on_hand>0));
+    let filtered = body.filter(stock=>stock.quantity_on_hand>0);
+    res.send(body);
+    // res.send(filtered);
   });
 });
 

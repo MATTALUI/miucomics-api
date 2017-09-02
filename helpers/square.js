@@ -81,3 +81,41 @@ module.exports.createSquareCategoryFromSeries = function(newSeries){
   }
   request(options,(error, response, body)=>{});
 }
+module.exports.decrementStock = function({id}){
+  let req = {
+    quantity_delta: -1,
+    adjustment_type: 'MANUAL_ADJUST'
+  }
+  let options = {
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory/stock-${id}`,
+    method: `POST`,
+    body: JSON.stringify(req),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  };
+  request(options,(error,response,body)=>{
+    // console.log(body);
+  });
+}
+module.exports.incrementStock = function({id}){
+  let req = {
+    quantity_delta: 1,
+    adjustment_type: 'MANUAL_ADJUST'
+  }
+  let options = {
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory/stock-${id}`,
+    method: `POST`,
+    body: JSON.stringify(req),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  };
+  request(options,(error,response,body)=>{
+    console.log(body);
+  });
+}

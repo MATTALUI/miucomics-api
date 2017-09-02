@@ -108,17 +108,20 @@ router.post('/stock', function(req,res,next){
 });
 
 router.patch('/stock/:id',function(req,res,next){
-  queries.updateStockPrice(req.params.id,req.body).then(()=>{
+  queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
+    console.log(stock);
     res.sendStatus(200);
   });
 });
 router.put('/stock/:id', function(req,res,next){
-  queries.increaseStockQuantity(req.params.id,req.body).then(()=>{
+  queries.increaseStockQuantity(req.params.id,req.body).then((stock)=>{
+    squareCall.incrementStock(stock[0]);
     res.sendStatus(200);
   });
 });
 router.delete('/stock/:id', function(req,res,next){
-  queries.decreaseStockQuantity(req.params.id,req.body).then(()=>{
+  queries.decreaseStockQuantity(req.params.id,req.body).then((stock)=>{
+    squareCall.decrementStock(stock[0]);
     res.sendStatus(200);
   });
 });

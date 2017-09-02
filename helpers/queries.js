@@ -135,7 +135,7 @@ module.exports.decreaseStockQuantity = function(id,{condition}){
   .where('issue_id', id)
   .returning('*')
   .then((relevantStock)=>{
-    return;
+    return relevantStock;
   })
 }
 module.exports.increaseStockQuantity = function(id,{condition}){
@@ -145,7 +145,7 @@ module.exports.increaseStockQuantity = function(id,{condition}){
   .where('issue_id', id)
   .returning('*')
   .then((relevantStock)=>{
-    return;
+    return relevantStock;
   })
 }
 module.exports.updateStockPrice=function(id,{price,condition}){
