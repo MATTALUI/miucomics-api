@@ -3,7 +3,27 @@ const queries = require('./queries.js');
 
 
 
-
+function addStock({quantity, id , condition, issue_id, price}){
+  if(quantity>0){
+    let req = {
+      quantity_delta: quantity,
+      adjustment_type: 'MANUAL_ADJUST'
+    }
+    let options = {
+      url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory/stock-${id}`,
+      method: `POST`,
+      body: JSON.stringify(req),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+      }
+    };
+    request(options,(error,response,body)=>{
+      console.log(body);
+    });
+  }
+}
 module.exports.createSquareItemFromStocks = function(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issue)=>{
     let itemObj = {
@@ -19,6 +39,8 @@ module.exports.createSquareItemFromStocks = function(stocks){
         name: `${stockObject.condition}`,
         id: `stock-${stockObject.id}`,
         pricing_type: "FIXED_PRICING",
+        track_inventory: true,
+        inventory_alert_type: 'LOW_QUANTITY',
         price_money: {
           currency_code: `USD`,
           amount: ((stockObject.price.toFixed(2))*100)
@@ -37,7 +59,8 @@ module.exports.createSquareItemFromStocks = function(stocks){
       }
     };
     request(options,(error,response,body)=>{
-      if(!error)console.log(body);
+      if(error)console.log(error);
+      stocks.forEach(addStock);
     });
   });
 }

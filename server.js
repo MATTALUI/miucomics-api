@@ -56,20 +56,19 @@ app.get('/', function(req,res,next){
   }
 });
 app.get('/test',function(req,res,next){
-  queries.getIssueById(7).then((issue)=>{res.send(issue)});
-  // console.log(process.env.LOCATION_ID);
-  // let options = {
-  //   url: 'https://connect.squareup.com/v2/locations',
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
-  //   }
-  // }
-  // request(options,function(error, response, body){
-  //   res.send(body);
-  // });
+  let options = {
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory`,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  }
+  request(options,function(error, response, body){
+    body = JSON.parse(body);
+    res.send(body.filter(stock=>stock.quantity_on_hand>0));
+  });
 });
 
 
