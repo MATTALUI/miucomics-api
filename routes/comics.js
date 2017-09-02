@@ -48,14 +48,6 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.body.ebay = (req.body.ebay==='true');
   req.body.shopify = (req.body.shopify==='true');
   req.pub_date = req.pub_date;
-  if(req.body.ebay){
-    //space for handling ebay, when we get to that
-    console.log('shared with ebay');
-  }
-  if(req.body.shopify){
-    //space for handling ebay, when we get to that
-    console.log('shared with shopify');
-  }
   if(req.file != undefined){
     let imageKey = normalizeImageUrl(req.body.series_title, req.body.number,req.file.mimetype);
     let coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
@@ -95,7 +87,6 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
 
 router.get('/stock/:id', function(req,res,next){
   queries.getStockForIssue(req.params.id).then((stockInfo)=>{
-
     res.send(stockInfo);
   });
 });
