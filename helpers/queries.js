@@ -155,7 +155,7 @@ module.exports.updateStockPrice=function(id,{price,condition}){
   .where('condition', condition)
   .returning('*')
   .then((updatedStock)=>{
-    return updatedStock
+    return updatedStock;
   });
 }
 module.exports.getIssueById = function(id){

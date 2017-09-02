@@ -109,7 +109,7 @@ router.post('/stock', function(req,res,next){
 
 router.patch('/stock/:id',function(req,res,next){
   queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
-    console.log(stock);
+    squareCall.updatePrice(stock[0]);
     res.sendStatus(200);
   });
 });

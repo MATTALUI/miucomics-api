@@ -57,7 +57,7 @@ app.get('/', function(req,res,next){
 });
 app.get('/test',function(req,res,next){
   let options = {
-    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory`,
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/items`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

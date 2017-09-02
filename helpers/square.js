@@ -116,6 +116,27 @@ module.exports.incrementStock = function({id}){
     }
   };
   request(options,(error,response,body)=>{
-    console.log(body);
+    // console.log(body);
+  });
+}
+module.exports.updatePrice = function(stockObject){
+  let req = {
+    price_money: {
+      currency_code: "USD",
+      amount: ((stockObject.price.toFixed(2))*100)
+    }
+  };
+  let options = {
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/items/issues-${stockObject.issue_id}/variations/stock-${stockObject.id}`,
+    method: `PUT`,
+    body: JSON.stringify(req),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  };
+  request(options,(error,request,body)=>{
+    // console.log(body);
   });
 }
