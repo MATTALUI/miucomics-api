@@ -20,7 +20,7 @@ function addStock({quantity, id , condition, issue_id, price}){
       }
     };
     request(options,(error,response,body)=>{
-      console.log(body);
+      // console.log(body);
     });
   }
 }
