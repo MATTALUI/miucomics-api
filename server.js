@@ -7,13 +7,9 @@ const cors = require('cors')
 const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 8000;
-const AWS = require('aws-sdk');
 const request = require('request');
-
-const shopifyCall = require('./helpers/shopify.js');
-
-
 const comicsRoute = require('./routes/comics.js');
+const webhooksRoute = require('./routes/webhook.js');
 
 
 
@@ -27,9 +23,8 @@ app.use(function (req, res, next) {
 });
 
 
-
+app.use('/webhook', webhooksRoute);
 app.use('/comics', comicsRoute);
-
 
 app.get('/', function(req,res,next){
   if(process.env.NODE_ENV === 'production'){
