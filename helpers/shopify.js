@@ -12,7 +12,7 @@ function addNewShopifyIdForNewIssue({product},issueInfo){
   });
 }
 
-module.exports.postNewIssueToShopifyFromStocks = function(stocks){
+function postNewIssueToShopifyFromStocks(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issueInfo)=>{
     let product = {
       product: {
@@ -43,7 +43,10 @@ module.exports.postNewIssueToShopifyFromStocks = function(stocks){
     });
   });
 }
-
-module.exports.test = function(){
-  return `Basic ${authorization}`;
+module.exports.checkShopifyTrackingfromStockInfo = function(newStockInfo){
+  queries.checkIfShopifyTracking(newStockInfo[0].issue_id).then((tracking)=>{
+    if(tracking){
+      postNewIssueToShopifyFromStocks(newStockInfo);
+    }
+  })
 }

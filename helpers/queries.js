@@ -162,6 +162,13 @@ module.exports.getIssueById = function(id){
   .first()
   .then(issue=>issue);
 }
+module.exports.checkIfShopifyTracking = function(issueId){
+  return knex('issues')
+  .where('id', issueId)
+  .returning('*')
+  .first()
+  .then(relevantIssue=>relevantIssue.shopify);
+}
 module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
   return knex('issues')
   .where('id',issueId)
