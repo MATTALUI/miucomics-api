@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
   table.float('price').defaultTo(0.00);
   table.integer('quantity').defaultTo(0);
   table.integer('issue_id').references('issues.id').notNullable().onDelete('cascade');
-  table.integer('shopify_id').defaultTo(null);
+  table.bigInteger('shopify_id').defaultTo(null);
 });
 
 };

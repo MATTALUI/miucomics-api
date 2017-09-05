@@ -2,10 +2,15 @@ const request = require('request');
 const queries = require('./queries.js');
 const authorization = new Buffer(`${process.env.SHOPIFY_API_KEY}:${process.env.SHOPIFY_PASSWORD}`).toString('base64');
 
-function addNewShopifyIdForNewIssue({product}){
-  console.log(product);
+function addNewShopifyIdForNewIssue({product},issueInfo){
+  queries.addShopifyIdToIssue(product.id,issueInfo.id);
+  product.variants.forEach((variant)=>{
+    let issueId = issueInfo.id;
+    let shopifyId = variant.id;
+    let condition = variant.option1
+    queries.addShopifyIdToStock(shopifyId, issueId, condition);
+  });
 }
-
 
 module.exports.postNewIssueToShopifyFromStocks = function(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issueInfo)=>{
@@ -34,7 +39,7 @@ module.exports.postNewIssueToShopifyFromStocks = function(stocks){
       }
     };
     request(options, (error,response,body)=>{
-      addNewShopifyIdForNewIssue(body)
+      addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
   });
 }

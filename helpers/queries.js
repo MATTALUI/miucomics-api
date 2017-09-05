@@ -41,7 +41,6 @@ function buildStockObjects(stockFormRequest){
   let stockObjects = [];
   let issueId = stockFormRequest.issueId;
   const conditions = ['Mint', 'Near Mint','Very Fine', 'Fine','Very Good', 'Good', 'Fair', 'Poor'];
-  // console.log(stockFormRequest);
   conditions.forEach((condition)=>{
     let stockObj = {};
     stockObj.condition = condition
@@ -102,9 +101,6 @@ module.exports.postNewSeries = function (data){
     return newSeries[0];
   });
 }
-
-
-
 module.exports.deleteSeries = function(seriesId){
   return knex('series')
   .del()
@@ -165,4 +161,23 @@ module.exports.getIssueById = function(id){
   .where('issues.id',id)
   .first()
   .then(issue=>issue);
+}
+module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
+  return knex('issues')
+  .where('id',issueId)
+  .update({shopify_id: shopifyId})
+  .returning('*')
+  .then((updatedIssue)=>{
+    updatedIssue[0].shopify_id = Number(updatedIssue[0].shopify_id);
+    return updatedIssue[0];
+  });
+}
+module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
+  // console.log(shopifyId, issueId, condition);
+  return knex('stock')
+  .where('issue_id', issueId)
+  .where('condition', condition)
+  .update({shopify_id: shopifyId})
+  .returning('*')
+  .then((updatedStock)=>{console.log(updatedStock[0]);});
 }

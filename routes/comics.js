@@ -95,7 +95,7 @@ router.get('/stock/:id', function(req,res,next){
 router.post('/stock', function(req,res,next){
   queries.postNewStockInfo(req.body).then((newStockInfo)=>{
     // squareCall.createSquareItemFromStocks(newStockInfo);
-    shopifyCall.postNewIssueToShopifyFromStocks(newStockInfo);
+      shopifyCall.postNewIssueToShopifyFromStocks(newStockInfo);
     res.send(newStockInfo)
   });
 });

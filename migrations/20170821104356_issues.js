@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
   table.date('pub_date');
   table.boolean('ebay').defaultTo(false);
   table.boolean('shopify').defaultTo(false);
-  table.integer('shopify_id').defaultTo(null);
+  table.bigInteger('shopify_id').defaultTo(null);
 });
 
 };
