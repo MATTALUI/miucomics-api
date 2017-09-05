@@ -57,7 +57,7 @@ module.exports.createSquareItemFromStocks = function(stocks){
       }
     };
     request(options,(error,response,body)=>{
-      if(error)console.log(error);
+      if(error)console.error(error);
       stocks.forEach(addStock);
     });
   });
@@ -66,7 +66,7 @@ module.exports.createSquareCategoryFromSeries = function(newSeries){
   let categoryObject = {
     "id": `series-${newSeries.id}`,
     "name": `${newSeries.title} Volume ${newSeries.volume}`
-  }
+  };
   let options = {
     url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/categories`,
     method: `POST`,
@@ -76,14 +76,16 @@ module.exports.createSquareCategoryFromSeries = function(newSeries){
       'Accept': 'application/json',
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
-  }
-  request(options,(error, response, body)=>{});
+  };
+  request(options,(error, response, body)=>{
+    if(error)console.error(error);
+  });
 }
 module.exports.decrementStock = function({id}){
   let req = {
     quantity_delta: -1,
     adjustment_type: 'MANUAL_ADJUST'
-  }
+  };
   let options = {
     url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory/stock-${id}`,
     method: `POST`,
@@ -94,13 +96,15 @@ module.exports.decrementStock = function({id}){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,response,body)=>{});
+  request(options,(error,response,body)=>{
+    if(error)console.error(error);
+  });
 }
 module.exports.incrementStock = function({id}){
   let req = {
     quantity_delta: 1,
     adjustment_type: 'MANUAL_ADJUST'
-  }
+  };
   let options = {
     url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory/stock-${id}`,
     method: `POST`,
@@ -111,7 +115,9 @@ module.exports.incrementStock = function({id}){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,response,body)=>{});
+  request(options,(error,response,body)=>{
+    if(error)console.error(error);
+  });
 }
 module.exports.updatePrice = function(stockObject){
   let req = {
@@ -130,5 +136,7 @@ module.exports.updatePrice = function(stockObject){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,request,body)=>{});
+  request(options,(error,response,body)=>{
+    if(error)console.error(error);
+  });
 }

@@ -11,7 +11,6 @@ function addNewShopifyIdForNewIssue({product},issueInfo){
     queries.addShopifyIdToStock(shopifyId, issueId, condition);
   });
 }
-
 function postNewIssueToShopifyFromStocks(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issueInfo)=>{
     let product = {
@@ -24,7 +23,9 @@ function postNewIssueToShopifyFromStocks(stocks){
       stocks.forEach((stock)=>{
         let variant = {
           option1: stock.condition,
-          price: (stock.price.toFixed(2))
+          price: (stock.price.toFixed(2)),
+          inventory_management: 'shopify',
+          inventory_quantity: stock.quantity
         };
         product.product.variants.push(variant);
     });
@@ -39,14 +40,45 @@ function postNewIssueToShopifyFromStocks(stocks){
       }
     };
     request(options, (error,response,body)=>{
+      if(error)console.error(error);
       addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
   });
 }
+function updateVariant(stock){
+  let variant = {
+    id: stock.shopify_id,
+    option1: stock.condition,
+    price: (stock.price.toFixed(2)),
+    inventory_quantity: stock.quantity
+  };
+  let options = {
+    url: `https://miucomicsdevelopment.myshopify.com/admin/variants/${stock.shopify_id}.json`,
+    method: `PUT`,
+    body: JSON.stringify({variant}),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Basic ${authorization}`
+    }
+  };
+  request(options,(error, response, body)=>{
+    if(error)console.error(error);
+  });
+
+}
+
 module.exports.checkShopifyTrackingfromStockInfo = function(newStockInfo){
   queries.checkIfShopifyTracking(newStockInfo[0].issue_id).then((tracking)=>{
     if(tracking){
       postNewIssueToShopifyFromStocks(newStockInfo);
+    }
+  })
+}
+module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
+  queries.checkIfShopifyTracking(stockInfo.issue_id).then((tracking)=>{
+    if(tracking){
+      updateVariant(stockInfo)
     }
   })
 }
