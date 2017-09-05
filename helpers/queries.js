@@ -173,11 +173,10 @@ module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
   });
 }
 module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
-  // console.log(shopifyId, issueId, condition);
   return knex('stock')
   .where('issue_id', issueId)
   .where('condition', condition)
   .update({shopify_id: shopifyId})
   .returning('*')
-  .then((updatedStock)=>{console.log(updatedStock[0]);});
+  .then((updatedStock)=>{return updatedStock[0];});
 }

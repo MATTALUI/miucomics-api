@@ -19,9 +19,7 @@ function addStock({quantity, id , condition, issue_id, price}){
         'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
       }
     };
-    request(options,(error,response,body)=>{
-      // console.log(body);
-    });
+    request(options,(error,response,body)=>{});
   }
 }
 module.exports.createSquareItemFromStocks = function(stocks){
@@ -96,9 +94,7 @@ module.exports.decrementStock = function({id}){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,response,body)=>{
-    // console.log(body);
-  });
+  request(options,(error,response,body)=>{});
 }
 module.exports.incrementStock = function({id}){
   let req = {
@@ -115,9 +111,7 @@ module.exports.incrementStock = function({id}){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,response,body)=>{
-    // console.log(body);
-  });
+  request(options,(error,response,body)=>{});
 }
 module.exports.updatePrice = function(stockObject){
   let req = {
@@ -136,7 +130,5 @@ module.exports.updatePrice = function(stockObject){
       'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
     }
   };
-  request(options,(error,request,body)=>{
-    // console.log(body);
-  });
+  request(options,(error,request,body)=>{});
 }
