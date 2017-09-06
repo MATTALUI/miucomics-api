@@ -34,7 +34,6 @@ app.get('/', function(req,res,next){
   }
 });
 app.get('/test',function(req,res,next){
-  console.log(req);
   res.send('tudo bom');
 });
 

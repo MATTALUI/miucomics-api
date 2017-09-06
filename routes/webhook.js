@@ -7,7 +7,7 @@ const shopifyCall = require('../helpers/shopify.js');
 
 router.use('/shopify', function(req,res,next){
   console.log('shopify');
-  console.log(req.body);
+  console.log(req.body.line_items);
   res.sendStatus(200);
 });
 

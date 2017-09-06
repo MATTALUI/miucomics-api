@@ -2,6 +2,7 @@ const request = require('request');
 const queries = require('./queries.js');
 const authorization = new Buffer(`${process.env.SHOPIFY_API_KEY}:${process.env.SHOPIFY_PASSWORD}`).toString('base64');
 
+
 function addNewShopifyIdForNewIssue({product},issueInfo){
   queries.addShopifyIdToIssue(product.id,issueInfo.id);
   product.variants.forEach((variant)=>{
