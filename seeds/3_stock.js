@@ -5,7 +5,7 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('stock').insert([
- condition: 'Mint', issue_id: 1, quantity: 3, price: 4.99 },
+ {condition: 'Mint', issue_id: 1, quantity: 3, price: 4.99 },
         { condition: 'Near Mint', issue_id: 1, quantity: 0, price: 0 },
         { condition: 'Very Fine', issue_id: 1, quantity: 1, price: 2.33 },
         { condition: 'Fine', issue_id: 1, quantity: 0, price: 0 },
