@@ -76,6 +76,8 @@ module.exports.checkShopifyTrackingfromStockInfo = function(newStockInfo){
   })
 }
 module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
+  console.log('stock Info');
+  console.log(stockInfo);
   queries.checkIfShopifyTracking(stockInfo.issue_id).then((tracking)=>{
     if(tracking){
       updateVariant(stockInfo)

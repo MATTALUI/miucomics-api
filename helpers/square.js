@@ -1,5 +1,6 @@
 const request = require('request');
 const queries = require('./queries.js');
+const shopifyCall = require('./shopify.js');
 
 
 
@@ -158,6 +159,7 @@ module.exports.updateToReflectSquare = function(){
         if(stock.quantity != squareVariant.quantity_on_hand){
           console.log(`update ${stock.condition}`);
           queries.changeStockQuantity(id, squareVariant.quantity_on_hand).then((updatedStock)=>{
+            shopifyCall.checkShopifyTrackingFromStockChange(updatedStock[0]);
             console.log('the deed is done');
           });
         }
