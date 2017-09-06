@@ -140,3 +140,28 @@ module.exports.updatePrice = function(stockObject){
     if(error)console.error(error);
   });
 }
+module.exports.updateToReflectSquare = function(){
+  let options = {
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/inventory`,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  }
+  request(options,(error,response,body)=>{
+    body = JSON.parse(body);
+    body.forEach((squareVariant)=>{
+      let id = Number(squareVariant.variation_id.split('-')[1]);
+      queries.getStockById(id).then((stock)=>{
+        if(stock.quantity != squareVariant.quantity_on_hand){
+          console.log(`update ${stock.condition}`);
+          queries.changeStockQuantity(id, squareVariant.quantity_on_hand).then((updatedStock)=>{
+            console.log('the deed is done');
+          });
+        }
+      });
+    });
+  });
+}

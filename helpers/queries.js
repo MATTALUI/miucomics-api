@@ -92,6 +92,15 @@ module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
     });
   });
 }
+module.exports.getStockById = function(id){
+  return knex('stock')
+  .where('id', id)
+  .returning('*')
+  .first()
+  .then((relevantStock)=>{
+    return relevantStock;
+  });
+}
 module.exports.postNewSeries = function (data){
   return knex('series')
   .insert(data)
@@ -142,6 +151,15 @@ module.exports.increaseStockQuantity = function(id,{condition}){
   .returning('*')
   .then((relevantStock)=>{
     return relevantStock;
+  })
+}
+module.exports.changeStockQuantity = function(id,count){
+  return knex('stock')
+  .where('id', id)
+  .update({quantity: count})
+  .returning('*')
+  .then((updatedStock)=>{
+    return updatedStock;
   })
 }
 module.exports.updateStockPrice=function(id,{price,condition}){
