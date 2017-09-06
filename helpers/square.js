@@ -157,10 +157,8 @@ module.exports.updateToReflectSquare = function(){
       let id = Number(squareVariant.variation_id.split('-')[1]);
       queries.getStockById(id).then((stock)=>{
         if(stock.quantity != squareVariant.quantity_on_hand){
-          console.log(`update ${stock.condition}`);
           queries.changeStockQuantity(id, squareVariant.quantity_on_hand).then((updatedStock)=>{
             shopifyCall.checkShopifyTrackingFromStockChange(updatedStock[0]);
-            console.log('the deed is done');
           });
         }
       });
