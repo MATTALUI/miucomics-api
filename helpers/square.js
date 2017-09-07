@@ -82,9 +82,9 @@ module.exports.createSquareCategoryFromSeries = function(newSeries){
     if(error)console.error(error);
   });
 }
-module.exports.decrementStock = function({id}){
+module.exports.decrementStock = function({id},decrementValue=1){
   let req = {
-    quantity_delta: -1,
+    quantity_delta: -(Number(decrementValue)),
     adjustment_type: 'MANUAL_ADJUST'
   };
   let options = {
@@ -101,9 +101,9 @@ module.exports.decrementStock = function({id}){
     if(error)console.error(error);
   });
 }
-module.exports.incrementStock = function({id}){
+module.exports.incrementStock = function({id},incrementValue=1){
   let req = {
-    quantity_delta: 1,
+    quantity_delta: Number(incrementValue),
     adjustment_type: 'MANUAL_ADJUST'
   };
   let options = {

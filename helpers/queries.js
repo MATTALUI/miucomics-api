@@ -205,3 +205,12 @@ module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
   .returning('*')
   .then((updatedStock)=>{return updatedStock[0];});
 }
+module.exports.decreaseStockQuantityFromShopifyId = function(shopifyId, decrementValue){
+  return knex('stock')
+  .where('shopify_id', shopifyId)
+  .update('quantity', knex.raw(`quantity - ${decrementValue}`))
+  .returning('*')
+  .then((relevantStock)=>{
+    return relevantStock[0];
+  })
+}

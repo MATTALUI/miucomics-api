@@ -7,6 +7,7 @@ const fs = require('fs');
 
 
 router.use('/shopify', function(req,res,next){
+  let promises = [];
   let theStuffThatWeCareAbout = req.body.line_items.map((item)=>{
     let info = {};
     info.id = item.id;
@@ -16,9 +17,16 @@ router.use('/shopify', function(req,res,next){
     info.name = item.name;
     return info;
   });
-  // console.log(req.body.line_items);
-  console.log(theStuffThatWeCareAbout);
-  res.sendStatus(200);
+  theStuffThatWeCareAbout.forEach((itemFromSale)=>{
+    promises.push(queries.decreaseStockQuantityFromShopifyId(itemFromSale.variantId, itemFromSale.quantity));
+  });
+
+  Promise.all(promises).then((updatedStocks)=>{
+    updatedStocks.forEach((stock,i)=>{
+      squareCall.decrementStock({id:stock.id},Number(theStuffThatWeCareAbout[i].quantity))
+    });
+  })
+  res.sendStatus(202);
 });
 
 
