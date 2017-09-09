@@ -123,6 +123,26 @@ exports.seed = function(knex, Promise) {
         { condition: 'Good', issue_id: 11, quantity: 0, price: 0 },
         { condition: 'Fair', issue_id: 11, quantity: 0, price: 0 },
         { condition: 'Poor', issue_id: 11, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Near Mint', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Fine', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 12, quantity: 0, price: 0 },
+
+        { condition: 'Mint', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Near Mint', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Fine', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 13, quantity: 0, price: 0 },
       ]);
     })
     .then(function(){
