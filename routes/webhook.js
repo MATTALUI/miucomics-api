@@ -47,4 +47,13 @@ router.use('/square', function(req,res,next){
 
 });
 
+
+
+
+
+router.use('/ebay',function(req,res,next){
+  console.log('ebay webhooks');
+  console.log(req.body);
+});
+
 module.exports = router;

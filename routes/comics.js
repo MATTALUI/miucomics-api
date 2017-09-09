@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
 const queries = require('../helpers/queries.js');
+const ebayCall = require('../helpers/ebay.js');
 const squareCall = require('../helpers/square.js');
 const shopifyCall = require('../helpers/shopify.js');
 const multer  = require('multer');
@@ -29,7 +30,7 @@ router.get('/series/:id', function(req,res,next){
 
 router.post('/series', function(req,res,next){
   queries.postNewSeries(req.body).then((newSeries)=>{
-    squareCall.createSquareCategoryFromSeries(newSeries);
+    // squareCall.createSquareCategoryFromSeries(newSeries);
     res.send(newSeries);
   });
 });
@@ -94,7 +95,7 @@ router.get('/stock/:id', function(req,res,next){
 
 router.post('/stock', function(req,res,next){
   queries.postNewStockInfo(req.body).then((newStockInfo)=>{
-    squareCall.createSquareItemFromStocks(newStockInfo);
+    // squareCall.createSquareItemFromStocks(newStockInfo);
     shopifyCall.checkShopifyTrackingfromStockInfo(newStockInfo);
     res.send(newStockInfo)
   });
@@ -102,7 +103,7 @@ router.post('/stock', function(req,res,next){
 
 router.patch('/stock/:id',function(req,res,next){
   queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
-    squareCall.updatePrice(stock[0]);
+    // squareCall.updatePrice(stock[0]);
     shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     res.sendStatus(200);
   });
@@ -110,7 +111,7 @@ router.patch('/stock/:id',function(req,res,next){
 
 router.put('/stock/:id', function(req,res,next){
   queries.increaseStockQuantity(req.params.id,req.body).then((stock)=>{
-    squareCall.incrementStock(stock[0]);
+    // squareCall.incrementStock(stock[0]);
     shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     res.sendStatus(200);
   });
@@ -118,7 +119,7 @@ router.put('/stock/:id', function(req,res,next){
 
 router.delete('/stock/:id', function(req,res,next){
   queries.decreaseStockQuantity(req.params.id,req.body).then((stock)=>{
-    squareCall.decrementStock(stock[0]);
+    // squareCall.decrementStock(stock[0]);
     shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     res.sendStatus(200);
   });
