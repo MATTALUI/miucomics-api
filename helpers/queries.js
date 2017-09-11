@@ -86,6 +86,9 @@ module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
     });
     return Promise.all(promises).then((stockForIssues)=>{
       stockForIssues.forEach((stockList,index)=>{
+        if(issues[index].shopify_id){
+          issues[index].shopify_id = Number(issues[index].shopify_id);
+        }
         issues[index].stock = stockList;
       });
       return issues;
