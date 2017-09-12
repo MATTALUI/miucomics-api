@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
-const queries = require('../queries/queries.js');
+const queries = require('../helpers/queries.js');
+const ebayCall = require('../helpers/ebay.js');
+const squareCall = require('../helpers/square.js');
+const shopifyCall = require('../helpers/shopify.js');
 const multer  = require('multer');
 const upload = multer({ dest: 'temp/' });
 const fs = require('fs');
@@ -27,6 +30,7 @@ router.get('/series/:id', function(req,res,next){
 
 router.post('/series', function(req,res,next){
   queries.postNewSeries(req.body).then((newSeries)=>{
+    squareCall.createSquareCategoryFromSeries(newSeries);
     res.send(newSeries);
   });
 });
@@ -43,17 +47,9 @@ router.delete('/series/:id', function(req,res,next){
 router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.body.series_id = Number(req.body.series_id);
   req.body.number = Number(req.body.number);
-  req.body.ebay = (req.body.ebay==='true');
-  req.body.shopify = (req.body.shopify==='true');
+  req.body.ebay = (req.body.ebay=='true');
+  req.body.shopify = (req.body.shopify=='true');
   req.pub_date = req.pub_date;
-  if(req.body.ebay){
-    //space for handling ebay, when we get to that
-    console.log('shared with ebay');
-  }
-  if(req.body.shopify){
-    //space for handling ebay, when we get to that
-    console.log('shared with shopify');
-  }
   if(req.file != undefined){
     let imageKey = normalizeImageUrl(req.body.series_title, req.body.number,req.file.mimetype);
     let coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
@@ -65,7 +61,7 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
             ACL: 'public-read'
       },function(err,data){
         if (err){
-          console.log(err);
+          console.error(err);
           fs.unlink(req.file.path,()=>{});
           res.send(err);
         }else{
@@ -99,23 +95,35 @@ router.get('/stock/:id', function(req,res,next){
 
 router.post('/stock', function(req,res,next){
   queries.postNewStockInfo(req.body).then((newStockInfo)=>{
+    squareCall.createSquareItemFromStocks(newStockInfo);
+    shopifyCall.checkShopifyTrackingfromStockInfo(newStockInfo);
     res.send(newStockInfo)
   });
 });
 
 router.patch('/stock/:id',function(req,res,next){
-  queries.updateStockPrice(req.params.id,req.body).then(()=>{
-    res.sendStatus(200);
+  queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
+    console.log(req.params.id);
+    console.log(req.body);
+    squareCall.updatePrice(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    res.sendStatus(202);
   });
 });
+
 router.put('/stock/:id', function(req,res,next){
-  queries.increaseStockQuantity(req.params.id,req.body).then(()=>{
-    res.sendStatus(200);
+  queries.increaseStockQuantity(req.params.id,req.body).then((stock)=>{
+    squareCall.incrementStock(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    res.sendStatus(202);
   });
 });
+
 router.delete('/stock/:id', function(req,res,next){
-  queries.decreaseStockQuantity(req.params.id,req.body).then(()=>{
-    res.sendStatus(200);
+  queries.decreaseStockQuantity(req.params.id,req.body).then((stock)=>{
+    squareCall.decrementStock(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    res.sendStatus(202);
   });
 });
 
@@ -136,29 +144,5 @@ function normalizeImageUrl(series, issueNumber,extension='image/jpeg'){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// router.get('/issues', function(req,res,next){
-//   queries.getAllIssues().then(function(info){
-//     res.send(info);
-//   });
-// });
-// router.get('/stock', function(req,res,next){
-//   queries.getAllStock().then(function(info){
-//     res.send(info);
-//   });
-// });
-// router.get('/meow',function(req,res,next){
-//   queries.meow().then((info)=>{res.send(info)});
-// });
 
 module.exports = router;

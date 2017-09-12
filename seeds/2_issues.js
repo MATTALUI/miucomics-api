@@ -103,6 +103,24 @@ exports.seed = function(knex, Promise) {
           pub_date: new Date(1997, 7),
           ebay: false,
           shopify: false
+        },
+        {
+          id: 12,
+          series_id: 3,
+          number: 1,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/flattrack1-1.png',
+          pub_date: new Date(),
+          ebay: false,
+          shopify: false
+        },
+        {
+          id: 13,
+          series_id: 3,
+          number: 2,
+          cover_image: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/flattrack+1-2.jpg',
+          pub_date: new Date(),
+          ebay: false,
+          shopify: false
         }
 
       ]);

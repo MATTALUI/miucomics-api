@@ -5,13 +5,13 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('stock').insert([
-        { condition: 'Mint', issue_id: 1, quantity: 3, price: 4.99 },
+ {condition: 'Mint', issue_id: 1, quantity: 3, price: 4.99 },
         { condition: 'Near Mint', issue_id: 1, quantity: 0, price: 0 },
         { condition: 'Very Fine', issue_id: 1, quantity: 1, price: 2.33 },
         { condition: 'Fine', issue_id: 1, quantity: 0, price: 0 },
         { condition: 'Very Good', issue_id: 1, quantity: 0, price: 0 },
-        { condition: 'Good', issue_id: 1, quantity: 0, price: 0 },
-        { condition: 'Fair', issue_id: 1, quantity: 0, price: 0 },
+        {condition: 'Good', issue_id: 1, quantity: 0, price: 0 },
+        {condition: 'Fair', issue_id: 1, quantity: 0, price: 0 },
         { condition: 'Poor', issue_id: 1, quantity: 1, price: 1.06 },
 
 
@@ -123,6 +123,26 @@ exports.seed = function(knex, Promise) {
         { condition: 'Good', issue_id: 11, quantity: 0, price: 0 },
         { condition: 'Fair', issue_id: 11, quantity: 0, price: 0 },
         { condition: 'Poor', issue_id: 11, quantity: 1, price: .99 },
+
+
+
+        { condition: 'Mint', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Near Mint', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Fine', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 12, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 12, quantity: 0, price: 0 },
+
+        { condition: 'Mint', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Near Mint', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Very Fine', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Fine', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Very Good', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Good', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Fair', issue_id: 13, quantity: 0, price: 0 },
+        { condition: 'Poor', issue_id: 13, quantity: 0, price: 0 },
       ]);
     })
     .then(function(){

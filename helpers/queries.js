@@ -41,7 +41,6 @@ function buildStockObjects(stockFormRequest){
   let stockObjects = [];
   let issueId = stockFormRequest.issueId;
   const conditions = ['Mint', 'Near Mint','Very Fine', 'Fine','Very Good', 'Good', 'Fair', 'Poor'];
-  // console.log(stockFormRequest);
   conditions.forEach((condition)=>{
     let stockObj = {};
     stockObj.condition = condition
@@ -87,10 +86,22 @@ module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
     });
     return Promise.all(promises).then((stockForIssues)=>{
       stockForIssues.forEach((stockList,index)=>{
+        if(issues[index].shopify_id){
+          issues[index].shopify_id = Number(issues[index].shopify_id);
+        }
         issues[index].stock = stockList;
       });
       return issues;
     });
+  });
+}
+module.exports.getStockById = function(id){
+  return knex('stock')
+  .where('id', id)
+  .returning('*')
+  .first()
+  .then((relevantStock)=>{
+    return relevantStock;
   });
 }
 module.exports.postNewSeries = function (data){
@@ -132,7 +143,7 @@ module.exports.decreaseStockQuantity = function(id,{condition}){
   .where('issue_id', id)
   .returning('*')
   .then((relevantStock)=>{
-    return;
+    return relevantStock;
   })
 }
 module.exports.increaseStockQuantity = function(id,{condition}){
@@ -142,7 +153,16 @@ module.exports.increaseStockQuantity = function(id,{condition}){
   .where('issue_id', id)
   .returning('*')
   .then((relevantStock)=>{
-    return;
+    return relevantStock;
+  })
+}
+module.exports.changeStockQuantity = function(id,count){
+  return knex('stock')
+  .where('id', id)
+  .update({quantity: count})
+  .returning('*')
+  .then((updatedStock)=>{
+    return updatedStock;
   })
 }
 module.exports.updateStockPrice=function(id,{price,condition}){
@@ -152,9 +172,48 @@ module.exports.updateStockPrice=function(id,{price,condition}){
   .where('condition', condition)
   .returning('*')
   .then((updatedStock)=>{
-    return updatedStock
+    return updatedStock;
   });
 }
-module.exports.meow = function(){
-  return getSeriesIssueCovers(1)
+module.exports.getIssueById = function(id){
+  return knex('issues')
+  .select(['issues.id as id','title','series_id','volume','number', 'pub_date', 'ebay', 'shopify', 'cover_image'])
+  .join('series','issues.series_id','series.id')
+  .where('issues.id',id)
+  .first()
+  .then(issue=>issue);
+}
+module.exports.checkIfShopifyTracking = function(issueId){
+  return knex('issues')
+  .where('id', issueId)
+  .returning('*')
+  .first()
+  .then(relevantIssue=>relevantIssue.shopify);
+}
+module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
+  return knex('issues')
+  .where('id',issueId)
+  .update({shopify_id: shopifyId})
+  .returning('*')
+  .then((updatedIssue)=>{
+    updatedIssue[0].shopify_id = Number(updatedIssue[0].shopify_id);
+    return updatedIssue[0];
+  });
+}
+module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
+  return knex('stock')
+  .where('issue_id', issueId)
+  .where('condition', condition)
+  .update({shopify_id: shopifyId})
+  .returning('*')
+  .then((updatedStock)=>{return updatedStock[0];});
+}
+module.exports.decreaseStockQuantityFromShopifyId = function(shopifyId, decrementValue){
+  return knex('stock')
+  .where('shopify_id', shopifyId)
+  .update('quantity', knex.raw(`quantity - ${decrementValue}`))
+  .returning('*')
+  .then((relevantStock)=>{
+    return relevantStock[0];
+  })
 }
