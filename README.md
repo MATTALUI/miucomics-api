@@ -128,7 +128,7 @@ Posting a JSON object to the new series endpoint will create a new series in the
 
 |Parameter|Type|Description|Required|
 |-|-|-|-|
-|itle| String | The title of a series| true|
+|title| String | The title of a series| true|
 |volume|Number|The volume number of a series|true|
 ###### EXAMPLE REQUEST BODY:
 ```javascript
@@ -193,7 +193,7 @@ The request for posting a new issue can be sent as either `Content-Type : multip
 ```
 NOTES:
 * Because the new issue information must be submitted with `Content-Type : multipart/form-data` to upload an `issue_cover`, issues and their relating stock information must be posted separately. For more information on posting an issue's stock information see [Creating Stock For An Issue](#creating-stock-for-an-issue).
-* Becase the `shopify_id` is set durin the stock-adding phase, the `shopify_id` will come back as `null` in the response. Don't worry. It'll get taken care of :thumbsup:.
+* Becase the `shopify_id` is set during the stock-adding phase, the `shopify_id` will come back as `null` in the response. Don't worry. It'll get taken care of :thumbsup:.
 ## Creating Stock For An Issue
 ###### METHOD: POST
 ###### ENDPOINT:
