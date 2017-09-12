@@ -21,6 +21,7 @@ CONTENTS
 ```
 ###### DESCRIPTION:
 The endpoint for getting all series will return an array of objects representing a series, along with all of the cover art for issues within a given series. Each series will have the following keys:
+
 |Key|Type|Description|
 |-|-|-|
 |id| Number | The id of a series.|
@@ -48,6 +49,7 @@ The endpoint for getting all series will return an array of objects representing
 ```
 ###### DESCRIPTION:
 The endpoint for getting all issues within a series will return an array of objects representing issues within a series, as well as the stock breakdown for each issue. Each issue will have the following keys:
+
 |Key|Type|Description|
 |-|-|-|
 |id|Number|The id value for the issue.|
@@ -123,6 +125,7 @@ The endpoint for getting all issues within a series will return an array of obje
 ```
 ###### DESCRIPTION:
 Posting a JSON object to the new series endpoint will create a new series in the databse and return the information for the newly-created series object. You can send an object with the following keys:
+
 |Parameter|Type|Description|Required|
 |-|-|-|-|
 |itle| String | The title of a series| true|
@@ -155,6 +158,7 @@ NOTES:
 ```
 ###### DESCRIPTION:
 The request for posting a new issue can be sent as either `Content-Type : multipart/form-data` or `Content-Type : application/json`. However, if uploading an image, request must be sent as `Content-Type : multipart/form-data`. You can send the following information:
+
 |Parameter|Type|Description|Required|
 |-|-|-|-|
 |series_id| Number | The id of the series the issue belongs to| true|
@@ -198,12 +202,14 @@ NOTES:
 ```
 ###### DESCRIPTION:
 The post route for adding new stock information will accept a `JSON` object with two parameters:
+
 |Parameter|Type|Description|Required|
 |-|-|-|-|
 |issueId|Number|The id for the issue that the submitted stock information will be connected to.|true|
 |stockInfo|Array|An array of stock objects.|true|
 
 And each stock object must contain the following parameters:
+
 |Parameter|Type|Description|Required|
 |-|-|-|-|
 |quantity| Number | The count of copies of the relevant issue in the relevant condition| true|
