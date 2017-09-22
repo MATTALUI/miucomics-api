@@ -345,4 +345,4 @@ The following routes have been added for API webhook requests:
 ```
 
 #### Other Resources
-[Developer Notes](https://github.com/MATTALUI/miucomics-api/tree/docs/docs)
+[Developer Notes](https://github.com/MATTALUI/miucomics-api/tree/master/docs)

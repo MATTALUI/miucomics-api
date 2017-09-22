@@ -23,7 +23,8 @@ router.use('/shopify', function(req,res,next){
 
   Promise.all(promises).then((updatedStocks)=>{
     updatedStocks.forEach((stock,i)=>{
-      squareCall.decrementStock({id:stock.id},Number(theStuffThatWeCareAbout[i].quantity))
+      squareCall.decrementStock({id:stock.id},Number(theStuffThatWeCareAbout[i].quantity));
+      //update ebay quantities here
     });
   })
   res.sendStatus(202);
@@ -40,6 +41,7 @@ this is the endpoint for the square webhook. It doesn't do any kind of validatio
 router.use('/square', function(req,res,next){
   if(req.body.event_type==='INVENTORY_UPDATED'){
     squareCall.updateToReflectSquare();
+    //update ebay quantities here
     res.sendStatus(202);
   }else{
     res.sendStatus(405);
