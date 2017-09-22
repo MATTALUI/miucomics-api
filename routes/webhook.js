@@ -35,7 +35,7 @@ router.use('/shopify', function(req,res,next){
 /*
 https://docs.connect.squareup.com/api/connect/v1/#validating-notifications
 
-this is the endpoint for the square webhook. It doesn't do any kind of validation right now to make testing locally easier, but you can find info for it at the link above. Sep-6-17
+this is the endpoint for the square webhook. It doesn't do any kind of validation right now to make testing locally easier, but you can find info for it at the link above. Matt Hummer Sep-6-17
 */
 router.use('/square', function(req,res,next){
   if(req.body.event_type==='INVENTORY_UPDATED'){
