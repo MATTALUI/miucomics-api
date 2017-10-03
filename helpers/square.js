@@ -20,7 +20,8 @@ function addStock({quantity, id , condition, issue_id, price}){
         'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
       }
     };
-    request(options,(error,response,body)=>{});
+    request(options,(error,response,body)=>{
+    });
   }
 }
 module.exports.createSquareItemFromStocks = function(stocks){
@@ -29,7 +30,8 @@ module.exports.createSquareItemFromStocks = function(stocks){
       name : `${issue.title} Volume ${issue.volume} Issue ${issue.number}`,
       id: `issues-${issue.id}`,
       color: "FFD241",
-      category_id: `series-${issue.series_id}`,
+      // category_id: `series-${issue.series_id}`,
+      category_id: '2AED3A4E-AA37-42F0-9509-BF6C008A8C7A',
       visibility: "PRIVATE",
       variations: []
     };
