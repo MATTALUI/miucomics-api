@@ -54,10 +54,10 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
   req.pub_date = req.pub_date;
   if(req.file != undefined){
     let imageKey = normalizeImageUrl(req.body.series_title, req.body.number,req.file.mimetype);
-    let coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
+    let coverUrl = 'https://s3.amazonaws.com/mixitupcomics/' + imageKey;
     fs.readFile(req.file.path, function(err,coverBuffer){
       s3.putObject({
-            Bucket: 'mixitupcomicimages',
+            Bucket: 'mixitupcomics',
             Key: imageKey,
             Body: coverBuffer,
             ACL: 'public-read'
