@@ -31,7 +31,7 @@ function postNewIssueToShopifyFromStocks(stocks){
         product.product.variants.push(variant);
     });
     let options = {
-      url: `https://miucomicsdevelopment.myshopify.com/admin/products.json`,
+      url: `https://mix-it-up-online.myshopify.com/admin/products.json`,
       method: `POST`,
       body: JSON.stringify(product),
       headers: {
@@ -41,7 +41,10 @@ function postNewIssueToShopifyFromStocks(stocks){
       }
     };
     request(options, (error,response,body)=>{
-      if(error)console.error(error);
+      if(error){
+        console.error(error);
+        return;
+      }
       addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
   });
@@ -54,7 +57,7 @@ function updateVariant(stock){
     inventory_quantity: stock.quantity
   };
   let options = {
-    url: `https://miucomicsdevelopment.myshopify.com/admin/variants/${stock.shopify_id}.json`,
+    url: `https://mix-it-up-online.myshopify.com/admin/variants/${stock.shopify_id}.json`,
     method: `PUT`,
     body: JSON.stringify({variant}),
     headers: {
