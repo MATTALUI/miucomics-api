@@ -18,7 +18,8 @@ function postNewIssueToShopifyFromStocks(stocks){
       product: {
         title: `${issueInfo.title} Volume ${issueInfo.volume} Issue ${issueInfo.number}`,
         variants: [],
-        images: [{src: issueInfo.cover_image}]
+        images: [{src: issueInfo.cover_image}],
+        collection_id: 436047120
       }
     };
       stocks.forEach((stock)=>{
@@ -45,6 +46,26 @@ function postNewIssueToShopifyFromStocks(stocks){
         console.error(error);
         return;
       }
+      let collect = {
+        product_id: JSON.parse(body).product.id,
+        collection_id: 436047120
+      }
+      let options = {
+        url: `https://mix-it-up-online.myshopify.com/admin/collects.json`,
+        method: `POST`,
+        body: JSON.stringify({collect}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Basic ${authorization}`
+        }
+      };
+      request(options,(error, response, body)=>{
+        if(error){
+          console.error(error);
+          return;
+        }
+      });
       addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
   });
@@ -85,4 +106,19 @@ module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
       updateVariant(stockInfo)
     }
   })
+}
+
+module.exports.test = function (){
+  let options = {
+    url: `https://mix-it-up-online.myshopify.com/admin/custom_collections.json`,
+    method: `GET`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Basic ${authorization}`
+    }
+  };
+  request(options, (error, response, body)=>{
+    console.log(JSON.parse(body));
+  });
 }

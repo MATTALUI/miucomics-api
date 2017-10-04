@@ -16,6 +16,16 @@ const s3 = new AWS.S3({
 
 
 
+
+router.get('/tester', function(req,res,next){
+  shopifyCall.test();
+  res.send('tester');
+});
+
+
+
+
+
 router.get('/series', function(req,res,next){
   queries.getAllSeriesWithImages().then(function(info){
     res.send(info);
