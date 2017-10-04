@@ -46,28 +46,32 @@ function postNewIssueToShopifyFromStocks(stocks){
         console.error(error);
         return;
       }
-      let collect = {
-        product_id: JSON.parse(body).product.id,
-        collection_id: 436047120
-      }
-      let options = {
-        url: `https://mix-it-up-online.myshopify.com/admin/collects.json`,
-        method: `POST`,
-        body: JSON.stringify({collect}),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Basic ${authorization}`
-        }
-      };
-      request(options,(error, response, body)=>{
-        if(error){
-          console.error(error);
-          return;
-        }
-      });
+      addToBackIssues(JSON.parse(body).product.id);
       addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
+  });
+}
+function addToBackIssues(product_id){
+  let collect = {
+    product_id,
+    collection_id: 436047120
+  };
+
+  let options = {
+    url: `https://mix-it-up-online.myshopify.com/admin/collects.json`,
+    method: `POST`,
+    body: JSON.stringify({collect}),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Basic ${authorization}`
+    }
+  };
+  request(options,(error, response, body)=>{
+    if(error){
+      console.error(error);
+      return;
+    }
   });
 }
 function updateVariant(stock){
