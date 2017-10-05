@@ -228,6 +228,15 @@ module.exports.getPassword = function(username){
     return false;
   });
 };
+module.exports.changePassword = function(username, newHashword){
+  return knex('users')
+  .update({password: newHashword})
+  .where('username', username)
+  .returning('*')
+  .then((changedUser)=>{
+    return changedUser[0];
+  })
+}
 module.exports.getUserInfo = function(username){
   return knex('users')
   .where('username', username)
