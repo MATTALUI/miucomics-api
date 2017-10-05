@@ -1,20 +1,50 @@
 const express = require('express');
 const router = express.Router();
-// const bcrypt = require('bcrypt');
+const queries = require('../helpers/queries.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 
 router.get('/', function(req,res,next){
-  console.log(process.env.JWTSECRET);
-  console.log(req.cookies);
-  res.send(false);
+  if(req.cookies.user){
+    jwt.verify(req.cookies.user, process.env.JWTSECRET, (error,decoded)=>{
+      if(error){
+        res.send(false);
+      }else{
+        res.send(true)
+      }
+    });
+  }else{
+    res.send(false);
+  }
 });
+
+
 router.post('/',function(req,res,next){
-  // console.log(req.body);
-  // req.cookie('world', 'hello');
-  // res.set('Access-Control-Allow-Origin', true);
-  // console.log(res.headers);
-  res.cookie('user', req.body.userName, {httpOnly: true});
-  res.send(false);
+  queries.getPassword(req.body.userName).then((hashword)=>{
+    if(hashword){
+      bcrypt.compare(req.body.password, hashword,(error, match)=>{
+        if (match) {
+          let userInfo = {
+            name: req.body.userName
+          };
+          jwt.sign(userInfo, process.env.JWTSECRET,(err, token)=>{
+            res.cookie('user', token);
+            res.send(true);
+          });
+        }else{
+          res.clearCookie('user');
+          res.send(false);
+        }
+      });
+    }else{
+      res.send(false);
+    }
+  });
 });
+
+
+
 router.delete('/',function(req,res,next){
   res.clearCookie('user');
   res.send('logout');

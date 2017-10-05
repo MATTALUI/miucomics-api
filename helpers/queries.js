@@ -14,7 +14,7 @@ function getSeriesIssueCovers(seriesId){
   return knex('issues')
   .where('series_id', seriesId)
   .select('cover_image')
-  .then((info)=>{return info});
+  .then((info)=>{return info;});
 }
 function getSeriesIssues(seriesId){
   return knex('issues')
@@ -43,7 +43,7 @@ function buildStockObjects(stockFormRequest){
   const conditions = ['Mint', 'Near Mint','Very Fine', 'Fine','Very Good', 'Good', 'Fair', 'Poor'];
   conditions.forEach((condition)=>{
     let stockObj = {};
-    stockObj.condition = condition
+    stockObj.condition = condition;
     stockObj.issue_id = issueId;
     stockObj.quantity = 0;
     stockObj.price = 0.00;
@@ -53,7 +53,7 @@ function buildStockObjects(stockFormRequest){
         stockObj.price = reqObj.price;
       }
     });
-    stockObjects.push(stockObj)
+    stockObjects.push(stockObj);
   });
   return stockObjects;
 }
@@ -68,16 +68,16 @@ module.exports.getAllSeriesWithImages = function(){
       covers = covers.map((set)=>{
         let coversArray = [];
         set.forEach((cover)=>{coversArray.push(cover.cover_image)});
-        if(coversArray.length === 0) coversArray.push('https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg')
+        if(coversArray.length === 0); coversArray.push('https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg');
         return coversArray;
       });
       covers.forEach((seriesCovers, index)=>{
         allSeries[index].issue_covers = seriesCovers;
-      })
+      });
       return allSeries;
     });
   });
-}
+};
 module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
   return getSeriesIssues(seriesId).then(function(issues){
     let promises = [];
@@ -94,7 +94,7 @@ module.exports.getSeriesIssuesWithStockInfo = function(seriesId){
       return issues;
     });
   });
-}
+};
 module.exports.getStockById = function(id){
   return knex('stock')
   .where('id', id)
@@ -103,7 +103,7 @@ module.exports.getStockById = function(id){
   .then((relevantStock)=>{
     return relevantStock;
   });
-}
+};
 module.exports.postNewSeries = function (data){
   return knex('series')
   .insert(data)
@@ -112,14 +112,14 @@ module.exports.postNewSeries = function (data){
     newSeries[0].issue_covers = ['https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg'];
     return newSeries[0];
   });
-}
+};
 module.exports.deleteSeries = function(seriesId){
   return knex('series')
   .del()
   .where('id', seriesId)
   .returning('*')
   .then(deleted=>deleted);
-}
+};
 module.exports.postNewIssue = function(data){
   return knex('issues')
   .insert(data)
@@ -127,7 +127,7 @@ module.exports.postNewIssue = function(data){
   .then((newIssue)=>{
     return newIssue[0];
   });
-}
+};
 module.exports.postNewStockInfo = function(stockInfo){
   let promises = [];
   let stockObjects = buildStockObjects(stockInfo);
@@ -135,7 +135,7 @@ module.exports.postNewStockInfo = function(stockInfo){
     promises.push(addStockInfo(stockObject));
   });
   return Promise.all(promises).then(allNewStocksArray=>allNewStocksArray);
-}
+};
 module.exports.decreaseStockQuantity = function(id,{condition}){
   return knex('stock')
   .update('quantity', knex.raw('quantity - 1'))
@@ -144,8 +144,8 @@ module.exports.decreaseStockQuantity = function(id,{condition}){
   .returning('*')
   .then((relevantStock)=>{
     return relevantStock;
-  })
-}
+  });
+};
 module.exports.increaseStockQuantity = function(id,{condition}){
   return knex('stock')
   .update('quantity', knex.raw('quantity + 1'))
@@ -154,8 +154,8 @@ module.exports.increaseStockQuantity = function(id,{condition}){
   .returning('*')
   .then((relevantStock)=>{
     return relevantStock;
-  })
-}
+  });
+};
 module.exports.changeStockQuantity = function(id,count){
   return knex('stock')
   .where('id', id)
@@ -163,8 +163,8 @@ module.exports.changeStockQuantity = function(id,count){
   .returning('*')
   .then((updatedStock)=>{
     return updatedStock;
-  })
-}
+  });
+};
 module.exports.updateStockPrice=function(id,{price,condition}){
   return knex('stock')
   .update({price:price})
@@ -174,7 +174,7 @@ module.exports.updateStockPrice=function(id,{price,condition}){
   .then((updatedStock)=>{
     return updatedStock;
   });
-}
+};
 module.exports.getIssueById = function(id){
   return knex('issues')
   .select(['issues.id as id','title','series_id','volume','number', 'pub_date', 'ebay', 'shopify', 'cover_image'])
@@ -182,14 +182,14 @@ module.exports.getIssueById = function(id){
   .where('issues.id',id)
   .first()
   .then(issue=>issue);
-}
+};
 module.exports.checkIfShopifyTracking = function(issueId){
   return knex('issues')
   .where('id', issueId)
   .returning('*')
   .first()
   .then(relevantIssue=>relevantIssue.shopify);
-}
+};
 module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
   return knex('issues')
   .where('id',issueId)
@@ -199,7 +199,7 @@ module.exports.addShopifyIdToIssue = function(shopifyId, issueId){
     updatedIssue[0].shopify_id = Number(updatedIssue[0].shopify_id);
     return updatedIssue[0];
   });
-}
+};
 module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
   return knex('stock')
   .where('issue_id', issueId)
@@ -207,7 +207,7 @@ module.exports.addShopifyIdToStock = function(shopifyId, issueId, condition){
   .update({shopify_id: shopifyId})
   .returning('*')
   .then((updatedStock)=>{return updatedStock[0];});
-}
+};
 module.exports.decreaseStockQuantityFromShopifyId = function(shopifyId, decrementValue){
   return knex('stock')
   .where('shopify_id', shopifyId)
@@ -215,5 +215,16 @@ module.exports.decreaseStockQuantityFromShopifyId = function(shopifyId, decremen
   .returning('*')
   .then((relevantStock)=>{
     return relevantStock[0];
-  })
-}
+  });
+};
+module.exports.getPassword = function(username){
+  return knex('users')
+  .where('username', username)
+  .first()
+  .then((user)=>{
+    if(user){
+      return user.password;
+    }
+    return false;
+  });
+};
