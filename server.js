@@ -1,9 +1,10 @@
 'use strict';
+var allowedOrigin;
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-  const allowedOrigin = 'http://localhost:8000';
+  allowedOrigin = 'http://localhost:3000';
 }else{
-  const allowedOrigin = 'http://miucomics.herokuapp.com'
+  allowedOrigin = 'http://miucomics.herokuapp.com'
 }
 const express = require('express');
 const cors = require('cors');
@@ -33,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
-  res.set('Access-Control-Allow-Origin',allowedOrigin);
+  res.set('Access-Control-Allow-Origin', allowedOrigin);
   res.set('Access-Control-Allow-Headers', 'Content-Type');
   res.set('Access-Control-Allow-Credentials', true);
   res.set({'X-who-stole-the-cookies-from-the-cookie-jar': 'matt'});

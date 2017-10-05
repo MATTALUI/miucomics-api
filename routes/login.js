@@ -3,7 +3,8 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 
 router.get('/', function(req,res,next){
-  console.log(req.cookies.user);
+  console.log(process.env.JWTSECRET);
+  console.log(req.cookies);
   res.send(false);
 });
 router.post('/',function(req,res,next){
@@ -15,6 +16,7 @@ router.post('/',function(req,res,next){
   res.send(false);
 });
 router.delete('/',function(req,res,next){
+  res.clearCookie('user');
   res.send('logout');
 });
 
