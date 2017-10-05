@@ -3,8 +3,8 @@ const router = express.Router();
 const knex = require('../knex');
 const queries = require('../helpers/queries.js');
 const ebayCall = require('../helpers/ebay.js');
-// const squareCall = require('../helpers/square.js');
-// const shopifyCall = require('../helpers/shopify.js');
+const squareCall = require('../helpers/square.js');
+const shopifyCall = require('../helpers/shopify.js');
 const multer  = require('multer');
 const upload = multer({ dest: 'temp/' });
 const fs = require('fs');
@@ -100,8 +100,8 @@ router.get('/stock/:id', function(req,res,next){
 
 router.post('/stock', function(req,res,next){
   queries.postNewStockInfo(req.body).then((newStockInfo)=>{
-    // squareCall.createSquareItemFromStocks(newStockInfo);
-    // shopifyCall.checkShopifyTrackingfromStockInfo(newStockInfo);
+    squareCall.createSquareItemFromStocks(newStockInfo);
+    shopifyCall.checkShopifyTrackingfromStockInfo(newStockInfo);
     //create ebay issues from stock information here
     res.send(newStockInfo)
   });
@@ -109,8 +109,8 @@ router.post('/stock', function(req,res,next){
 
 router.patch('/stock/:id',function(req,res,next){
   queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
-    // squareCall.updatePrice(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    squareCall.updatePrice(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay prices here
     res.sendStatus(202);
   });
@@ -118,8 +118,8 @@ router.patch('/stock/:id',function(req,res,next){
 
 router.put('/stock/:id', function(req,res,next){
   queries.increaseStockQuantity(req.params.id,req.body).then((stock)=>{
-    // squareCall.incrementStock(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    squareCall.incrementStock(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay quantities here
     res.sendStatus(202);
   });
@@ -127,8 +127,8 @@ router.put('/stock/:id', function(req,res,next){
 
 router.delete('/stock/:id', function(req,res,next){
   queries.decreaseStockQuantity(req.params.id,req.body).then((stock)=>{
-    // squareCall.decrementStock(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    squareCall.decrementStock(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay quantities here
     res.sendStatus(202);
   });
