@@ -5,19 +5,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
+
+
+
+router.get('/info', function(req,res,next){
+  jwt.verify(req.cookies.user, process.env.JWTSECRET, (error, data)=>{
+    queries.getUserInfo(data.name).then((user)=>{
+      res.send(user);
+    });
+  });
+});
+
+
 router.get('/', function(req,res,next){
   if(req.cookies.user){
     jwt.verify(req.cookies.user, process.env.JWTSECRET, (error,decoded)=>{
       if(error){
         res.send(false);
       }else{
-        res.send(true)
+        res.send(true);
       }
     });
   }else{
     res.send(false);
   }
 });
+
 
 
 router.post('/',function(req,res,next){

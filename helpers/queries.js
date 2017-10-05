@@ -228,3 +228,12 @@ module.exports.getPassword = function(username){
     return false;
   });
 };
+module.exports.getUserInfo = function(username){
+  return knex('users')
+  .where('username', username)
+  .first()
+  .then((user)=>{
+    delete user.password;
+    return user;
+  });
+}

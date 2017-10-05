@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
+  res.set('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE,PATCH');
   res.set('Access-Control-Allow-Origin', allowedOrigin);
   res.set('Access-Control-Allow-Headers', 'Content-Type');
   res.set('Access-Control-Allow-Credentials', true);
