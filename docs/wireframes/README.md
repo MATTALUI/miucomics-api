@@ -10,4 +10,4 @@
 ![Mix it Up Out of Stock Volumes](/docs/wireframes/screenshots/outofstock.png)
 
 ###### Mix It Up! stock adjuster
-![Mix it Up Stock Adjuster](/docs/wireframes/screenshots/login.png)
+![Mix it Up Stock Adjuster](/docs/wireframes/screenshots/stock.png)
