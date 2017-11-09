@@ -1,3 +1,9 @@
+var shopUrl;
+if(process.env.NODE_ENV === 'production'){
+  shopUrl = 'https://mix-it-up-online.myshopify.com/admin/';
+}else{
+  shopUrl = 'https://miucomicsdevelopment.myshopify.com/admin/'
+}
 const request = require('request');
 const queries = require('./queries.js');
 const authorization = new Buffer(`${process.env.SHOPIFY_API_KEY}:${process.env.SHOPIFY_PASSWORD}`).toString('base64');
@@ -16,12 +22,15 @@ function postNewIssueToShopifyFromStocks(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issueInfo)=>{
     let product = {
       product: {
-        title: `${issueInfo.title} Volume ${issueInfo.volume} Issue ${issueInfo.number}`,
+        title: `${issueInfo.title}  #${issueInfo.number} (Volume ${issueInfo.volume})`,
         variants: [],
-        images: [{src: issueInfo.cover_image}],
-        collection_id: 436047120
+        images: [{src: issueInfo.cover_image}, {src: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo+(3).jpg'}],
+
       }
     };
+    if(process.env.NODE_ENV === 'production'){
+      product.product.collection_id = 436047120;
+    }
       stocks.forEach((stock)=>{
         let variant = {
           option1: stock.condition,
@@ -32,7 +41,7 @@ function postNewIssueToShopifyFromStocks(stocks){
         product.product.variants.push(variant);
     });
     let options = {
-      url: `https://mix-it-up-online.myshopify.com/admin/products.json`,
+      url: shopUrl+`products.json`,
       method: `POST`,
       body: JSON.stringify(product),
       headers: {
@@ -46,7 +55,9 @@ function postNewIssueToShopifyFromStocks(stocks){
         console.error(error);
         return;
       }
-      addToBackIssues(JSON.parse(body).product.id);
+      if(process.env.NODE_ENV==='production'){
+        addToBackIssues(JSON.parse(body).product.id);
+      }
       addNewShopifyIdForNewIssue(JSON.parse(body), issueInfo);
     });
   });
@@ -58,7 +69,7 @@ function addToBackIssues(product_id){
   };
 
   let options = {
-    url: `https://mix-it-up-online.myshopify.com/admin/collects.json`,
+    url: shopUrl+`collects.json`,
     method: `POST`,
     body: JSON.stringify({collect}),
     headers: {
@@ -82,7 +93,7 @@ function updateVariant(stock){
     inventory_quantity: stock.quantity
   };
   let options = {
-    url: `https://mix-it-up-online.myshopify.com/admin/variants/${stock.shopify_id}.json`,
+    url: shopUrl+`variants/${stock.shopify_id}.json`,
     method: `PUT`,
     body: JSON.stringify({variant}),
     headers: {
@@ -114,7 +125,7 @@ module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
 
 module.exports.test = function (){
   let options = {
-    url: `https://mix-it-up-online.myshopify.com/admin/custom_collections.json`,
+    url: shopUrl+`custom_collections.json`,
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',

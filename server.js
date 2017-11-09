@@ -34,6 +34,9 @@ if(process.env.NODE_ENV !== 'production' && process.argv[2] === 'slow'){
     next();
   });
 }
+
+app.use('/webhook', webhooksRoute);
+
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
   res.set('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE,PATCH');
@@ -45,7 +48,6 @@ app.use(function (req, res, next) {
 });
 
 app.use('/login', loginRoute);
-app.use('/webhook', webhooksRoute);
 app.use('/comics', comicsRoute);
 
 app.get('/', function(req,res,next){
