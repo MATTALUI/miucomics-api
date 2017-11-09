@@ -26,12 +26,17 @@ function addStock({quantity, id , condition, issue_id, price}){
 }
 module.exports.createSquareItemFromStocks = function(stocks){
   queries.getIssueById(stocks[0].issue_id).then((issue)=>{
+    let category_id;
+    if(process.env.NODE_ENV === 'production'){
+      category_id = '2AED3A4E-AA37-42F0-9509-BF6C008A8C7A';
+    }else{
+      category_id = `series-${issue.series_id}`;
+    }
     let itemObj = {
-      name : `${issue.title} Volume ${issue.volume} Issue ${issue.number}`,
+      name : `${issue.title} #${issue.number} (Volume ${issue.volume}${issue.pub_date?', '+issue.pub_date.getFullYear():''})`,
       id: `issues-${issue.id}`,
       color: "FFD241",
-      // category_id: `series-${issue.series_id}`,
-      category_id: '2AED3A4E-AA37-42F0-9509-BF6C008A8C7A',
+      category_id: category_id,
       visibility: "PRIVATE",
       variations: []
     };
@@ -65,10 +70,11 @@ module.exports.createSquareItemFromStocks = function(stocks){
     });
   });
 }
+
 module.exports.createSquareCategoryFromSeries = function(newSeries){
   let categoryObject = {
     "id": `series-${newSeries.id}`,
-    "name": `${newSeries.title} Volume ${newSeries.volume}`
+    "name": `${newSeries.title} (Volume ${newSeries.volume})`
   };
   let options = {
     url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/categories`,

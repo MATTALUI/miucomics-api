@@ -2,7 +2,7 @@
 var allowedOrigin;
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-  allowedOrigin = 'http://localhost:3000';
+  allowedOrigin = 'http://mixitup.com.ics:3000';
 }else{
   allowedOrigin = 'http://miucomics.herokuapp.com'
 }
@@ -20,18 +20,20 @@ const jwt = require('jsonwebtoken');
 
 
 
-// app.use(cors());
-// app.use('/',function(req,res,next){
-//   // Access-Control-Allow-Origin
-//   // res.set
-//   res.set('Access-Control-Allow-Origin','http://localhost:3000');
-//   res.set('Access-Control-Allow-Headers', 'Content-Type');
-//   res.set('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+if(process.env.NODE_ENV !== 'production' && process.argv[2] === 'slow'){
+  app.use('/', function(req,res,next){
+    //this middleware simulates slow connection in a production environment
+    for(let i = 0; i<=15000;i++){
+      console.log(i);
+    }
+    next();
+  });
+}
 app.use(function (req, res, next) {
   res.removeHeader("X-Powered-By");
   res.set('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE,PATCH');
@@ -59,5 +61,5 @@ app.get('/test',function(req,res,next){
 
 
 app.listen(port,function(){
-  console.log('listening on :'+port);
+  console.log(process.argv[2]==='slow'?'listening slowly on :'+port:'listening on :'+port);
 });
