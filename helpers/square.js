@@ -46,7 +46,7 @@ module.exports.createSquareItemFromStocks = function(stocks){
         id: `stock-${stockObject.id}`,
         pricing_type: "FIXED_PRICING",
         track_inventory: true,
-        inventory_alert_type: 'LOW_QUANTITY',
+        // inventory_alert_type: 'LOW_QUANTITY',
         price_money: {
           currency_code: `USD`,
           amount: ((stockObject.price.toFixed(2))*100)

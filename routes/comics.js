@@ -81,12 +81,11 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
             Body: coverBuffer,
             ACL: 'public-read'
       },function(err,data){
+        fs.unlink(req.file.path,()=>{});
         if (err){
-          console.error(err);
-          fs.unlink(req.file.path,()=>{});
+          console.error('error: ',err);
           res.send(err);
         }else{
-          fs.unlink(req.file.path,()=>{});
           delete req.body.series_title;
           req.body.cover_image = coverUrl;
           queries.postNewIssue(req.body).then((newIssueInfo)=>{
@@ -126,7 +125,7 @@ router.post('/stock', function(req,res,next){
 router.patch('/stock/:id',function(req,res,next){
   queries.updateStockPrice(req.params.id,req.body).then((stock)=>{
     squareCall.updatePrice(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay prices here
     res.sendStatus(202);
   });
@@ -135,7 +134,7 @@ router.patch('/stock/:id',function(req,res,next){
 router.put('/stock/:id', function(req,res,next){
   queries.increaseStockQuantity(req.params.id,req.body).then((stock)=>{
     squareCall.incrementStock(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay quantities here
     res.sendStatus(202);
   });
@@ -144,7 +143,7 @@ router.put('/stock/:id', function(req,res,next){
 router.delete('/stock/:id', function(req,res,next){
   queries.decreaseStockQuantity(req.params.id,req.body).then((stock)=>{
     squareCall.decrementStock(stock[0]);
-    // shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
+    shopifyCall.checkShopifyTrackingFromStockChange(stock[0]);
     //update ebay quantities here
     res.sendStatus(202);
   });
