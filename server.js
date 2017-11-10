@@ -55,11 +55,11 @@ app.get('/', function(req,res,next){
   if(process.env.NODE_ENV === 'production'){
     res.redirect('http://miucomics.herokuapp.com/');
   }else{
-    res.redirect('http://localhost:3000');
+    res.redirect('http://mixitup.com.ics:3000');
   }
 });
 app.get('/test',function(req,res,next){
-  res.send('tudo bom');
+  res.send('meow!');
 });
 
 

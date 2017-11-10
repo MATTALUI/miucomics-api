@@ -125,7 +125,7 @@ module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
 
 module.exports.test = function (){
   let options = {
-    url: shopUrl+`custom_collections.json`,
+    url: shopUrl+`webhooks.json`,
     method: `GET`,
     headers: {
       'Content-Type': 'application/json',
