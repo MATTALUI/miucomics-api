@@ -79,7 +79,8 @@ router.post('/issues',upload.single('cover_image'), function(req,res,next){
             Bucket: bucket,
             Key: imageKey,
             Body: coverBuffer,
-            ACL: 'public-read'
+            ACL: 'public-read',
+            ContentType: req.file.mimetype
       },function(err,data){
         fs.unlink(req.file.path,()=>{});
         if (err){

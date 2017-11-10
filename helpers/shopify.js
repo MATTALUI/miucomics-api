@@ -24,7 +24,7 @@ function postNewIssueToShopifyFromStocks(stocks){
       product: {
         title: `${issueInfo.title}  #${issueInfo.number} (Volume ${issueInfo.volume})`,
         variants: [],
-        images: [{src: issueInfo.cover_image}, {src: 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo+(3).jpg'}],
+        images: [{src: issueInfo.cover_image}],
 
       }
     };
