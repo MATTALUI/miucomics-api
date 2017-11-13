@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
   allowedOrigin = 'http://mixitup.com.ics:3000';
 }else{
-  allowedOrigin = 'http://miucomics.herokuapp.com'
+  allowedOrigin = 'http://miucomics.herokuapp.com';
 }
 const express = require('express');
 const cors = require('cors');

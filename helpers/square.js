@@ -35,8 +35,12 @@ module.exports.createSquareItemFromStocks = function(stocks){
     let itemObj = {
       name : `${issue.title} #${issue.number} (Volume ${issue.volume}${issue.pub_date?', '+issue.pub_date.getFullYear():''})`,
       id: `issues-${issue.id}`,
-      color: "FFD241",
+      // color: "FFD241",
       category_id: category_id,
+      master_image: {
+        url: issue.cover_image,
+        id: `${issue.title} #${issue.number} (Volume ${issue.volume}${issue.pub_date?', '+issue.pub_date.getFullYear():''}) cover`
+      },
       visibility: "PRIVATE",
       variations: []
     };
