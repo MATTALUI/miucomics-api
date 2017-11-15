@@ -49,7 +49,7 @@ router.use('/square', function(req,res,next){
     //update ebay quantities here
     res.sendStatus(202);
   }else{
-    res.sendStatus(405);
+    res.sendStatus(204);
   }
 
 });
