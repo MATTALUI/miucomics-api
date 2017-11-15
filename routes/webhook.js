@@ -5,12 +5,11 @@ const squareCall = require('../helpers/square.js');
 const shopifyCall = require('../helpers/shopify.js');
 const fs = require('fs');
 
-router.use('/', function(req,res,next){
-  console.log(req.body);
-  next();
-});
+// router.use('/', function(req,res,next){
+//   console.log(req.body);
+//   next();
+// });
 router.use('/shopify', function(req,res,next){
-  console.log('/shopify');
   let promises = [];
   let theStuffThatWeCareAbout = req.body.line_items.map((item)=>{
     let info = {};
@@ -38,12 +37,12 @@ router.use('/shopify', function(req,res,next){
 
 
 /*
+XXX:
 https://docs.connect.squareup.com/api/connect/v1/#validating-notifications
 
 this is the endpoint for the square webhook. It doesn't do any kind of validation right now to make testing locally easier, but you can find info for it at the link above. Matt Hummer Sep-6-17
 */
 router.use('/square', function(req,res,next){
-  console.log('/square');
   if(req.body.event_type==='INVENTORY_UPDATED'){
     squareCall.updateToReflectSquare();
     //update ebay quantities here
@@ -51,7 +50,6 @@ router.use('/square', function(req,res,next){
   }else{
     res.sendStatus(204);
   }
-
 });
 
 
@@ -59,7 +57,7 @@ router.use('/square', function(req,res,next){
 
 
 router.use('/ebay',function(req,res,next){
-  console.log('ebay webhooks');
+  console.log('ebay webhook');
   console.log(req.body);
 });
 

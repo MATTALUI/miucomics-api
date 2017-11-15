@@ -3,7 +3,22 @@ const queries = require('./queries.js');
 const shopifyCall = require('./shopify.js');
 
 
+function addTax(itemId,taxId){
+  request({
+    method: 'PUT',
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/items/${itemId}/fees/${taxId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  },(error,response,body)=>{
+    if(error){
+      console.error(error);
+    }
+  });
 
+}
 function addStock({quantity, id , condition, issue_id, price}){
   if(quantity>0){
     let req = {
@@ -35,7 +50,7 @@ module.exports.createSquareItemFromStocks = function(stocks){
     let itemObj = {
       name : `${issue.title} #${issue.number} (Volume ${issue.volume}${issue.pub_date?', '+issue.pub_date.getFullYear():''})`,
       id: `issues-${issue.id}`,
-      // color: "FFD241",
+      color: "FFD241",
       category_id: category_id,
       master_image: {
         url: issue.cover_image,
@@ -50,7 +65,6 @@ module.exports.createSquareItemFromStocks = function(stocks){
         id: `stock-${stockObject.id}`,
         pricing_type: "FIXED_PRICING",
         track_inventory: true,
-        // inventory_alert_type: 'LOW_QUANTITY',
         price_money: {
           currency_code: `USD`,
           amount: ((stockObject.price.toFixed(2))*100)
@@ -70,6 +84,13 @@ module.exports.createSquareItemFromStocks = function(stocks){
     };
     request(options,(error,response,body)=>{
       if(error)console.error(error);
+      let taxId;
+      if(process.env.NODE_ENV === 'production'){
+        taxId = '6CF697E6-4F7D-431A-8992-CF0AC1CB3A5D';
+      }else{
+        taxId = 'JWBJ72DA7TTPRVIOIG4M3XTW';
+      }
+      addTax(itemObj.id,taxId);
       stocks.forEach(addStock);
     });
   });
