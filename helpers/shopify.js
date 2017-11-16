@@ -123,6 +123,23 @@ module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
   })
 }
 
+module.exports.deleteIssue = function(issueShopifyId){
+  let options = {
+    url: shopUrl+`products/${issueShopifyId}.json`,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Basic ${authorization}`
+    }
+  };
+  request(options,(error,response,body)=>{
+    if(error){
+      console.error(error);
+    }
+  });
+}
+
 module.exports.test = function (){
   let options = {
     url: shopUrl+`webhooks.json`,

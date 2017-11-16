@@ -198,3 +198,19 @@ module.exports.updateToReflectSquare = function(){
     });
   });
 }
+module.exports.deleteIssue = function(issueId){
+  let options = {
+    method: 'DELETE',
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/items/issues-${issueId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  };
+  request(options,(error,response,body)=>{
+    if(error){
+      console.error(error);
+    }
+  });
+}

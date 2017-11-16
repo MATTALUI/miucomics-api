@@ -248,3 +248,10 @@ module.exports.getUserInfo = function(username){
     return user;
   });
 }
+module.exports.deleteIssue = function(issueId){
+  return knex('issues')
+  .where('id', issueId)
+  .del()
+  .returning('*')
+  .then(deleted=>deleted[0])
+}

@@ -50,6 +50,17 @@ router.delete('/series/:id', function(req,res,next){
   });
 });
 
+router.delete('/issues/:id', function(req,res,next){
+  queries.deleteIssue(req.params.id).then((deleted)=>{
+    squareCall.deleteIssue(deleted.id);
+    if(deleted.shopify === true){
+      shopifyCall.deleteIssue(deleted.shopify_id);
+    }
+    //check and delete from shopify
+    res.sendStatus(204);
+  });
+});
+
 
 
 
