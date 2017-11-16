@@ -45,7 +45,6 @@ router.post('/series', function(req,res,next){
 });
 
 router.delete('/series/:seriesId', function(req,res,next){
-  console.log('delete series '+req.params.seriesId);
   queries.getSeriesIssuesWithStockInfo(req.params.seriesId).then((issues)=>{
     issues.forEach((issue)=>{
       queries.deleteIssue(issue.id).then((deletedIssue)=>{
