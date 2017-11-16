@@ -120,7 +120,7 @@ module.exports.deleteSeries = function(seriesId){
   .del()
   .where('id', seriesId)
   .returning('*')
-  .then(deleted=>deleted);
+  .then(deleted=>deleted[0]);
 };
 module.exports.postNewIssue = function(data){
   return knex('issues')

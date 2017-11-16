@@ -214,3 +214,19 @@ module.exports.deleteIssue = function(issueId){
     }
   });
 }
+module.exports.deleteSquareCategory = function(seriesId){
+  let options = {
+    method: 'DELETE',
+    url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/categories/series-${seriesId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+    }
+  };
+  request(options, (error,response,body)=>{
+    if(error){
+      console.error(error);
+    }
+  });
+}

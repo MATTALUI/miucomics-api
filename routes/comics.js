@@ -44,8 +44,22 @@ router.post('/series', function(req,res,next){
   });
 });
 
-router.delete('/series/:id', function(req,res,next){
-  queries.deleteSeries(req.params.id).then(()=>{
+router.delete('/series/:seriesId', function(req,res,next){
+  console.log('delete series '+req.params.seriesId);
+  queries.getSeriesIssuesWithStockInfo(req.params.seriesId).then((issues)=>{
+    issues.forEach((issue)=>{
+      queries.deleteIssue(issue.id).then((deletedIssue)=>{
+        squareCall.deleteIssue(deletedIssue.id);
+        if(deletedIssue.shopify === true){
+          shopifyCall.deleteIssue(deletedIssue.shopify_id);
+        }
+      });
+    });
+    queries.deleteSeries(req.params.seriesId).then((deletedSeries)=>{
+      if(process.env.NODE_ENV !== 'production'){
+        squareCall.deleteSquareCategory(deletedSeries.id);
+      }
+    });
     res.sendStatus(202);
   });
 });
