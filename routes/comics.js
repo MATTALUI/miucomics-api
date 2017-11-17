@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
 const queries = require('../helpers/queries.js');
-// const ebayCall = require('../helpers/ebay.js');
 const squareCall = require('../helpers/square.js');
 const shopifyCall = require('../helpers/shopify.js');
 const multer  = require('multer');
@@ -34,14 +33,41 @@ router.patch('/series/:seriesId',function(req,res,next){
   console.log('update series');
   res.sendStatus(204);
 });
-router.patch('/issues/:issueId', upload.single('cover_image'), function(req,res,next){
-  if(req.file !== undefined){
-    console.log('the uploaded a file');
-  }else{
-    queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
-      res.send(updated);
-    });
-  }
+router.patch('/issues/:issueId',upload.single('cover_image'),function(req,res,next){
+    if(req.file != undefined){
+      let seriesTitle = req.body.seriesTitle;
+      let imageKey = normalizeImageUrl(seriesTitle, req.body.number,req.file.mimetype);
+      delete req.body.seriesTitle;
+      fs.readFile(req.file.path,function(error,coverBuffer){
+        fs.unlink(req.file.path,()=>{});
+          let coverUrl;
+          let bucket;
+          if(process.env.NODE_ENV === 'production'){
+            coverUrl = 'https://s3.amazonaws.com/mixitupcomics/' + imageKey;
+            bucket = 'mixitupcomics';
+          }else{
+            coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
+            bucket = 'mixitupcomicimages';
+          }
+          req.body.cover_image = coverUrl;
+          s3.putObject({
+            Bucket: bucket,
+            Key: imageKey,
+            Body: coverBuffer,
+            ACL: 'public-read',
+            ContentType: req.file.mimetype
+          },function(error, data){
+            queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
+              res.send(updated);
+            })
+          })
+
+      });
+    }else{
+      queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
+        res.send(updated);
+      });
+    }
 });
 router.post('/series', function(req,res,next){
   queries.postNewSeries(req.body).then((newSeries)=>{
@@ -77,6 +103,27 @@ router.delete('/series/:seriesId', function(req,res,next){
 
 router.delete('/issues/:id', function(req,res,next){
   queries.deleteIssue(req.params.id).then((deleted)=>{
+    console.log(deleted);
+    if(deleted.cover_image.indexOf('amazonaws.com') >-1 && deleted.cover_image !== 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg'){
+      //XXX: you should probably delete the images from s3...
+      // let bucket;
+      // if(process.env.NODE_ENV === 'production'){
+      //   bucket = 'mixitupcomics';
+      // }else{
+      //   bucket = 'mixitupcomicimages';
+      // }
+      // let options = {
+      //   Bucket: bucket,
+      //   key:
+      // }
+      // s3.deleteObject(options, function(error,data){
+      //   if(error){
+      //     console.error(error);
+      //   }else{
+      //     console.log(data);
+      //   }
+      // });
+    }
     squareCall.deleteIssue(deleted.id);
     if(deleted.shopify === true){
       shopifyCall.deleteIssue(deleted.shopify_id);
