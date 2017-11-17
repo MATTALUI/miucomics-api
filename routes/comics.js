@@ -30,7 +30,19 @@ router.get('/series/:id', function(req,res,next){
     res.send(info);
   });
 });
-
+router.patch('/series/:seriesId',function(req,res,next){
+  console.log('update series');
+  res.sendStatus(204);
+});
+router.patch('/issues/:issueId', upload.single('cover_image'), function(req,res,next){
+  if(req.file !== undefined){
+    console.log('the uploaded a file');
+  }else{
+    queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
+      res.send(updated);
+    });
+  }
+});
 router.post('/series', function(req,res,next){
   queries.postNewSeries(req.body).then((newSeries)=>{
 
@@ -69,7 +81,6 @@ router.delete('/issues/:id', function(req,res,next){
     if(deleted.shopify === true){
       shopifyCall.deleteIssue(deleted.shopify_id);
     }
-    //check and delete from shopify
     res.sendStatus(204);
   });
 });

@@ -255,3 +255,10 @@ module.exports.deleteIssue = function(issueId){
   .returning('*')
   .then(deleted=>deleted[0])
 }
+module.exports.updateIssue = function(issueId, issueUpdate){
+  return knex('issues')
+  .update(issueUpdate)
+  .where('id', issueId)
+  .returning('*')
+  .then(updated=>updated[0]);
+}
