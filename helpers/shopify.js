@@ -123,6 +123,36 @@ module.exports.checkShopifyTrackingFromStockChange = function(stockInfo){
   })
 }
 
+module.exports.editIssue = function(editedIssue){
+  if(!editedIssue.shopify){
+    return;
+  }
+  queries.getSeriesById(editedIssue.series_id).then((series)=>{
+    let product = {
+      id: editedIssue.shopify_id,
+      title: `${series.title}  #${editedIssue.number} (Volume ${series.volume}${editedIssue.pub_date?', ' + editedIssue.pub_date.getFullYear():''})`,
+      images: [
+        {src: editedIssue.cover_image}
+      ]
+    };
+    let options = {
+      url: shopUrl+`products/${editedIssue.shopify_id}.json`,
+      method: 'PUT',
+      body: JSON.stringify({product}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Basic ${authorization}`
+      }
+    };
+    request(options, (error,response,body)=>{
+      if(error){
+        console.error(error);
+      }
+    });
+  });
+}
+
 module.exports.deleteIssue = function(issueShopifyId){
   let options = {
     url: shopUrl+`products/${issueShopifyId}.json`,

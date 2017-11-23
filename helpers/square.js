@@ -214,6 +214,7 @@ module.exports.deleteIssue = function(issueId){
     }
   });
 }
+
 module.exports.deleteSquareCategory = function(seriesId){
   let options = {
     method: 'DELETE',
@@ -228,5 +229,33 @@ module.exports.deleteSquareCategory = function(seriesId){
     if(error){
       console.error(error);
     }
+  });
+}
+
+module.exports.editIssue = function(editedIssue){
+  queries.getSeriesById(editedIssue.series_id).then((series)=>{
+    let update = {
+      name: `${series.title} #${editedIssue.number} (Volume ${series.volume}${editedIssue.pub_date?', ' + editedIssue.pub_date.getFullYear():''})`,
+      master_image: {
+        url: editedIssue.cover_image,
+        id: `${series.title} #${editedIssue.number} (Volume ${series.volume}${editedIssue.pub_date?', ' + editedIssue.pub_date.getFullYear():''})`
+      }
+
+    };
+    let options = {
+      url: `https://connect.squareup.com/v1/${process.env.LOCATION_ID}/items/issues-${editedIssue.id}`,
+      method: 'PUT',
+      body: JSON.stringify(update),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${process.env.SQUARE_PERSONAL_ACCESS_TOKEN}`
+      }
+    };
+    request(options,(error,response,body)=>{
+      if(error){
+        console.error(error);
+      }
+    });
   });
 }

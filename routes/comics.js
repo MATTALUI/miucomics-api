@@ -34,37 +34,45 @@ router.patch('/series/:seriesId',function(req,res,next){
   res.sendStatus(204);
 });
 router.patch('/issues/:issueId',upload.single('cover_image'),function(req,res,next){
-    if(req.file != undefined){
-      let seriesTitle = req.body.seriesTitle;
-      let imageKey = normalizeImageUrl(seriesTitle, req.body.number,req.file.mimetype);
-      delete req.body.seriesTitle;
-      fs.readFile(req.file.path,function(error,coverBuffer){
-        fs.unlink(req.file.path,()=>{});
-          let coverUrl;
-          let bucket;
-          if(process.env.NODE_ENV === 'production'){
-            coverUrl = 'https://s3.amazonaws.com/mixitupcomics/' + imageKey;
-            bucket = 'mixitupcomics';
-          }else{
-            coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
-            bucket = 'mixitupcomicimages';
-          }
-          req.body.cover_image = coverUrl;
-          s3.putObject({
-            Bucket: bucket,
-            Key: imageKey,
-            Body: coverBuffer,
-            ACL: 'public-read',
-            ContentType: req.file.mimetype
-          },function(error, data){
-            queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
-              res.send(updated);
-            })
+  if(req.body.shopify){
+    let newShopifyInfo = shopifyCall.toggleTracking(req.params.issueId);
+    res.send({toggle: 'shopify'});
+    return;
+  }
+  if(req.file != undefined){
+    let seriesTitle = req.body.seriesTitle;
+    let imageKey = normalizeImageUrl(seriesTitle, req.body.number,req.file.mimetype);
+    delete req.body.seriesTitle;
+    fs.readFile(req.file.path,function(error,coverBuffer){
+      fs.unlink(req.file.path,()=>{});
+        let coverUrl;
+        let bucket;
+        if(process.env.NODE_ENV === 'production'){
+          coverUrl = 'https://s3.amazonaws.com/mixitupcomics/' + imageKey;
+          bucket = 'mixitupcomics';
+        }else{
+          coverUrl = 'https://s3.us-east-2.amazonaws.com/mixitupcomicimages/' + imageKey;
+          bucket = 'mixitupcomicimages';
+        }
+        req.body.cover_image = coverUrl;
+        s3.putObject({
+          Bucket: bucket,
+          Key: imageKey,
+          Body: coverBuffer,
+          ACL: 'public-read',
+          ContentType: req.file.mimetype
+        },function(error, data){
+          queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
+            squareCall.editIssue(updated);
+            shopifyCall.editIssue(updated);
+            res.send(updated);
           })
-
+        })
       });
     }else{
       queries.updateIssue(req.params.issueId,req.body).then((updated)=>{
+        squareCall.editIssue(updated);
+        shopifyCall.editIssue(updated);
         res.send(updated);
       });
     }

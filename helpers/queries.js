@@ -58,6 +58,13 @@ function buildStockObjects(stockFormRequest){
   return stockObjects;
 }
 
+module.exports.getSeriesById = function(seriesId){
+  return knex('series')
+  .where('id', seriesId)
+  .returning('*')
+  .first()
+  .then(series=>series);
+}
 module.exports.getAllSeriesWithImages = function(){
   return getAllSeries().then((allSeries)=>{
     let promises = [];
@@ -67,7 +74,7 @@ module.exports.getAllSeriesWithImages = function(){
     return Promise.all(promises).then((covers)=>{
       covers = covers.map((set)=>{
         let coversArray = [];
-        set.forEach((cover)=>{coversArray.push(cover.cover_image)});
+        set.forEach((cover)=>{coversArray.push(cover.cover_image);});
         if(coversArray.length === 0){
           coversArray.push('https://s3.us-east-2.amazonaws.com/mixitupcomicimages/logo.jpg');
         }
